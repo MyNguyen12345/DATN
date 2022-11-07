@@ -8,22 +8,25 @@ plugins {
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
 }
-//apply(plugin = "io.spring.dependency-management")
-//
-//extra["slf4j.version"] = "1.7.20"
-//
-//the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
-//    imports {
-//        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
-//    }
-//}
-//tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-//    archiveClassifier.set("boot")
-//}
-//
-//tasks.named<Jar>("jar") {
-//    archiveClassifier.set("")
-//}
+apply(plugin = "io.spring.dependency-management")
+
+extra["slf4j.version"] = "1.7.20"
+
+the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+    imports {
+        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    }
+}
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    archiveClassifier.set("boot")
+}
+
+tasks.named<Jar>("jar") {
+    archiveClassifier.set("")
+}
+tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    requiresUnpack("**/jruby-complete-*.jar")
+}
 springBoot {
     mainClass.set("com.example.apidatn.ApiDatnApplication")
 }
