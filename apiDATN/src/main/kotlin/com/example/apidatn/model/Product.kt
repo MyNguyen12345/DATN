@@ -1,0 +1,49 @@
+package com.example.apidatn.model
+
+import javax.persistence.*
+
+@Entity
+@Table(name = "product")
+class Product(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "product_id")
+        var productId:Int?=null,
+
+        @Column(name = "user_id")
+        var userId:Int?=null,
+
+        @Column(name = "category_detail_id")
+        var categoryDetailId:Int?=null,
+
+        @Column(name = "product_name")
+        var productName:String?=null,
+
+        @Column(name = "product_status")
+        var productStatus:String?=null,
+
+        @Column(name = "avatar")
+        var avatar:String?=null,
+
+        @Column(name = "description")
+        var description:String?=null,
+
+        @Column(name = "amount_product")
+        var amountProduct:Int?=null,
+
+        @Column(name = "price_product")
+        var priceProduct :Float?=null,
+
+        @Column(name = "price_deposit")
+        var priceDeposit:Float?=null,
+
+//        @ManyToOne(fetch = FetchType.LAZY)
+//        @JoinColumn(name = "category_detail_id",nullable = false,foreignKey = ForeignKey(name = "product_ibfk_2"))
+//        var categoryDetail: CategoryDetail?=null,
+
+        @OneToMany(mappedBy = "product")
+        var listImage:MutableList<Image>?=null
+
+
+
+)
