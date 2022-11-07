@@ -29,6 +29,8 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     implementation("org.modelmapper:modelmapper:3.1.0")
     implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("org.postgresql:postgresql:42.5.0")
+
 }
 
 tasks.withType<KotlinCompile> {
