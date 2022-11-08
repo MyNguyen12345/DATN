@@ -32,8 +32,6 @@ class LoginController (private val customUserDetailService: CustomUserDetailServ
         if (SignKey.privateKey==null && SignKey.publicKey==null) {
             jwtSignKey.jwtWithRsaSign()
         }
-//        val listkey = jwtSignKey.readFile(Constant.fileName)
-//        val privatekeyByte = Base64.getDecoder().decode(listkey[1])
         val privatekeyByte=Base64.getDecoder().decode(SignKey.privateKey)
         try {
             authenticationManager.authenticate(

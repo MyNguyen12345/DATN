@@ -21,16 +21,7 @@ class JwtSignKey {
         val encodePrivateKey = Base64.getEncoder().encodeToString(privateKey.encoded)
         SignKey.publicKey=encodePublicKey
         SignKey.privateKey=encodePrivateKey
-//        writeFile(encodePublicKey)
-//        writeFile("\n")
-//        writeFile(encodePrivateKey)
     }
-
-//    fun readFile(fileName: String): List<String> {
-//        return File(fileName).readLines()
-//    }
-
-//    fun writeFile(context: String) = File(Constant.fileName).appendText(context)
 
     fun decodePublicKey(publicKey: ByteArray): PublicKey {
         val ks = X509EncodedKeySpec(publicKey)
