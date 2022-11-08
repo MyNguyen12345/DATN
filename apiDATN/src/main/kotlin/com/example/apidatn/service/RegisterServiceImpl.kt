@@ -6,6 +6,7 @@ import com.example.apidatn.repository.UserRepository
 import org.modelmapper.ModelMapper
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.*
 
 
 @Service
@@ -21,6 +22,7 @@ class RegisterServiceImpl(private val userRepository: UserRepository):RegisterSe
             account.roleId=2
             account.password= encoder.encode(accountDto.password)
             account.accountStatus="active"
+            account.dateJoin= Date(System.currentTimeMillis())
             userRepository.save(account)
             return true
         }
