@@ -1,6 +1,7 @@
 package com.example.apidatn.jwt
 
 import com.example.apidatn.constant.Constant
+import com.example.apidatn.constant.SignKey
 import org.springframework.stereotype.Component
 import java.io.File
 import java.security.*
@@ -18,16 +19,9 @@ class JwtSignKey {
         val privateKey = keypair.private
         val encodePublicKey = Base64.getEncoder().encodeToString(publicKey.encoded)
         val encodePrivateKey = Base64.getEncoder().encodeToString(privateKey.encoded)
-        writeFile(encodePublicKey)
-        writeFile("\n")
-        writeFile(encodePrivateKey)
+        SignKey.publicKey=encodePublicKey
+        SignKey.privateKey=encodePrivateKey
     }
-
-    fun readFile(fileName: String): List<String> {
-        return File(fileName).readLines()
-    }
-
-    fun writeFile(context: String) = File(Constant.fileName).appendText(context)
 
     fun decodePublicKey(publicKey: ByteArray): PublicKey {
         val ks = X509EncodedKeySpec(publicKey)

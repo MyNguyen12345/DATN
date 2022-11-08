@@ -43,6 +43,7 @@ class UserInfoServiceImpl(private val userRepository: UserRepository):UserInfoSe
            user.phone=userInfo.phone
            user.username=userInfo.username
            user.gender=userInfo.gender
+           user.roleId=2
            userRepository.save(user)
            return true
        }

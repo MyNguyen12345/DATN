@@ -1,6 +1,6 @@
 package com.example.apidatn.filter
 
-import com.example.apidatn.constant.Constant
+import com.example.apidatn.constant.SignKey
 import com.example.apidatn.jwt.JwtSignKey
 import com.example.apidatn.jwt.JwtUtil
 import com.example.apidatn.service.CustomUserDetailService
@@ -39,8 +39,7 @@ class JwtFilter: OncePerRequestFilter() {
         var userName = ""
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
-            val listKey = jwtSignKey.readFile(Constant.fileName)
-            val publicKeyByte = Base64.getDecoder().decode(listKey[0])
+            val publicKeyByte = Base64.getDecoder().decode(SignKey.publicKey)
             publicKey = jwtSignKey.decodePublicKey(publicKeyByte)
             token = authorization.substring(7)
             println(token)
