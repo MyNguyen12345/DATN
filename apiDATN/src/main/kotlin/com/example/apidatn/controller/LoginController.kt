@@ -1,6 +1,7 @@
 package com.example.apidatn.controller
 
 import com.example.apidatn.constant.Constant
+import com.example.apidatn.constant.SignKey
 import com.example.apidatn.dto.AccountDto
 import com.example.apidatn.dto.ResponseTokenDto
 import com.example.apidatn.jwt.JwtSignKey
@@ -28,11 +29,12 @@ class LoginController (private val customUserDetailService: CustomUserDetailServ
 
     @PostMapping("/login")
     fun loginSign(@RequestBody accountDto: AccountDto): ResponseTokenDto {
-        if (jwtSignKey.readFile(Constant.fileName).isEmpty()) {
+        if (SignKey.privateKey==null && SignKey.publicKey==null) {
             jwtSignKey.jwtWithRsaSign()
         }
-        val listkey = jwtSignKey.readFile(Constant.fileName)
-        val privatekeyByte = Base64.getDecoder().decode(listkey[1])
+//        val listkey = jwtSignKey.readFile(Constant.fileName)
+//        val privatekeyByte = Base64.getDecoder().decode(listkey[1])
+        val privatekeyByte=Base64.getDecoder().decode(SignKey.privateKey)
         try {
             authenticationManager.authenticate(
                     UsernamePasswordAuthenticationToken(
