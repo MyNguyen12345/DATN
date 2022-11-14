@@ -1,8 +1,6 @@
 package com.example.apidatn.service
 
-import com.example.apidatn.dto.CategoryDetailDto
 import com.example.apidatn.dto.ProductDto
-import com.example.apidatn.model.CategoryDetail
 import com.example.apidatn.model.Image
 import com.example.apidatn.model.Product
 import com.example.apidatn.repository.ImageRepository
@@ -10,11 +8,17 @@ import com.example.apidatn.repository.ProductRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files.*
+import java.nio.file.Paths
 import java.util.stream.Collectors
+
+
 
 @Service
 class ProductServiceImpl(private val productRepository: ProductRepository):ProductService {
 
+    private val  currentFolder = Paths.get(System.getProperty("user.dir"))
     @Autowired
     private lateinit var imageRepository: ImageRepository
 
@@ -43,8 +47,10 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                 .collect(Collectors.toList())
     }
 
-    override fun addProduct(productDto: ProductDto): Boolean {
-        productRepository.save(toDtoEntity(productDto))
+    override fun addProduct(productDto: ProductDto): Boolean  {
+        val product=toDtoEntity(productDto)
+        productRepository.save(product)
+
         return true
     }
 
@@ -84,4 +90,39 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
         }
         return false
     }
+
+    override fun saveImage(productId: Int, imageFile: MultipartFile): Boolean {
+        val product=productRepository.findById(productId).get()
+        val staticPath=Paths.get("static")
+        val imagePath=Paths.get("images")
+        if(!exists(currentFolder.resolve(staticPath).resolve(imagePath))){
+            createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
+        }
+        val file=currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
+        newOutputStream(file).use { os -> os.write(imageFile.bytes) }
+        product.avatar=imagePath.resolve(imageFile.originalFilename).toString()
+        productRepository.save(product)
+        return true
+    }
+
+    override fun saveListImage(productId: Int, listImage: MutableList<MultipartFile>): Boolean {
+        val staticPath=Paths.get("static")
+        val imagePath=Paths.get("images")
+        if(!exists(currentFolder.resolve(staticPath).resolve(imagePath))){
+            createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
+        }
+        for (imageFile in listImage) {
+            val file = currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
+            newOutputStream(file).use { os -> os.write(imageFile.bytes) }
+            val imageSave=Image(
+                    productId=productId,
+                    imageUrl = imagePath.resolve(imageFile.originalFilename).toString()
+            )
+            imageRepository.save(imageSave)
+
+
+        }
+        return true
+    }
+
 }
