@@ -30,6 +30,9 @@ class Bill (
         @Column(name = "pay_id")
         var pay_id:Int?=null,
 
+        @Column(name = "pay_status")
+        var payStatus:String?=null,
+
         @OneToMany(mappedBy = "bill",cascade = [CascadeType.ALL],fetch = FetchType.LAZY)
         var listBillDetail:MutableList<BillDetail>?=null,
 

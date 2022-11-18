@@ -36,6 +36,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("org.postgresql:postgresql:42.5.0")
     implementation("org.apache.maven.plugins:maven-jar-plugin:3.3.0")
+    implementation("com.paypal.sdk:rest-api-sdk:1.14.0")
 
 
 }
