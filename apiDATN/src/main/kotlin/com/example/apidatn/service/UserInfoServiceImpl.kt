@@ -1,6 +1,5 @@
 package com.example.apidatn.service
 
-import com.example.apidatn.dto.AccountDto
 import com.example.apidatn.dto.UserInfoDto
 import com.example.apidatn.model.User
 import com.example.apidatn.repository.RoleRepository
@@ -56,5 +55,13 @@ class UserInfoServiceImpl(private val userRepository: UserRepository):UserInfoSe
 
     override fun getAllUserRole(): MutableList<UserInfoDto> {
         return userRepository.findAllByUser().stream().map { user:User->toEntityDto(user) }.collect(Collectors.toList())
+    }
+
+    override fun updateUserStatus(userId: Int, accountStatus: String): Boolean {
+        if(userRepository.findById(userId).isPresent){
+            userRepository.updateUserByStatus(accountStatus,userId )
+            return true
+        }
+        return false
     }
 }

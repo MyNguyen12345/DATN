@@ -10,4 +10,5 @@ interface UserInfoService {
     fun updateUser(userId: Int,userInfoDto: UserInfoDto):Boolean
     fun getAllUserByStatus():MutableList<UserInfoDto>
     fun getAllUserRole():MutableList<UserInfoDto>
+    fun updateUserStatus(userId: Int, accountStatus:String):Boolean
 }
