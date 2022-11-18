@@ -53,4 +53,8 @@ class UserInfoServiceImpl(private val userRepository: UserRepository):UserInfoSe
     override fun getAllUserByStatus(): MutableList<UserInfoDto> {
         return userRepository.findAllByAccountStatus().stream().map { user:User->toEntityDto(user) }.collect(Collectors.toList())
     }
+
+    override fun getAllUserRole(): MutableList<UserInfoDto> {
+        return userRepository.findAllByUser().stream().map { user:User->toEntityDto(user) }.collect(Collectors.toList())
+    }
 }

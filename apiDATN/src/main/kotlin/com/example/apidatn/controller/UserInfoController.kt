@@ -21,6 +21,9 @@ class UserInfoController (private val userInfoService: UserInfoService){
     @GetMapping("/status")
     fun getAllUserByStatus():ResponseEntity<MutableList<UserInfoDto>> =ResponseEntity.ok(userInfoService.getAllUserByStatus())
 
+    @GetMapping("/role")
+    fun getAllUserRole():ResponseEntity<MutableList<UserInfoDto>> = ResponseEntity.ok(userInfoService.getAllUserRole())
+
 
     @PostMapping("/{userId}")
     fun updateUser(@PathVariable("userId") userId: Int, @RequestBody userInfoDto: UserInfoDto):ResponseEntity<UserInfoDto>{

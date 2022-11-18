@@ -12,4 +12,7 @@ interface UserRepository:JpaRepository<User,Int> {
 
     @Query( value = "SELECT * FROM user_info  WHERE user_info.account_status= 'active'",nativeQuery = true)
     fun findAllByAccountStatus():MutableList<User>
+
+    @Query(value = "select *from user_info join role on user_info.role_id  = role.role_id  where role.role_name ='ROLE_USER'",nativeQuery = true)
+    fun findAllByUser():MutableList<User>
 }
