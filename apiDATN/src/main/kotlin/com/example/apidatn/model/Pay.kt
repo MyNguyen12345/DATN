@@ -13,6 +13,4 @@ class Pay (
         @Column(name = "pay_name")
         var payName:String?=null,
 
-        @Column(name = "pay_status")
-        var payStatus:String?=null
         )
