@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/product",produces = ["text/plain;charset=UTF-8"])
+@RequestMapping(value= ["/product"],produces = ["application/json;charset=UTF-8"])
 class ProductController {
 
     @Autowired
