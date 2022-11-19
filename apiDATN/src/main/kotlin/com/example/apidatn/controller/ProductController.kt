@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/product",produces = ["application/hal+json;charset=utf8"])
 class ProductController {
 
     @Autowired
     private lateinit var productService:ProductService
 
-    @GetMapping(produces = ["application/hal+json;charset=utf8"])
+    @GetMapping()
     fun getAllProduct():ResponseEntity<MutableList<ProductDto>>
     =ResponseEntity.ok(productService.getAllProduct())
 
