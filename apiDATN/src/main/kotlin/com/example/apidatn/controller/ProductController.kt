@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/product",produces = ["application/json"])
+@RequestMapping("/product",produces = ["application/json;charset=utf8"])
 class ProductController {
 
     @Autowired
