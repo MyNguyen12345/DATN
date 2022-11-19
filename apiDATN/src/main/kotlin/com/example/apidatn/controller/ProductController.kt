@@ -15,7 +15,7 @@ class ProductController {
     @Autowired
     private lateinit var productService:ProductService
 
-    @GetMapping()
+    @GetMapping(produces = ["application/hal+json;charset=utf8"])
     fun getAllProduct():ResponseEntity<MutableList<ProductDto>>
     =ResponseEntity.ok(productService.getAllProduct())
 
