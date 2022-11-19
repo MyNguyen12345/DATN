@@ -31,21 +31,21 @@ class ProductController {
     fun findAllByCategoryDetailId(@RequestParam("cateDetailId") categoryDetailId:Int, @PathVariable cateDetailId: String):ResponseEntity<MutableList<ProductDto>>
             = ResponseEntity.ok(productService.findAllByCategoryDetailId(categoryDetailId))
 
-    @PostMapping("/image/{id}")
-   fun saveImage(@PathVariable("id")productId: Int,@RequestParam("image") imageFile: MultipartFile):ResponseEntity<Boolean>
-   = ResponseEntity.ok(productService.saveImage(productId,imageFile))
-
-    @PostMapping("")
-    fun addProduct(@RequestBody productDto: ProductDto):ResponseEntity<Boolean>
-    {
-        return ResponseEntity.ok(productService.addProduct(productDto))
-    }
-
-    @PostMapping("/{id}")
-    fun updateProduct(@PathVariable("id") productId: Int,@RequestBody productDto: ProductDto):ResponseEntity<Boolean>
-    = ResponseEntity.ok(productService.updateProduct(productDto,productId))
-
-    @PostMapping("listImage/{id}")
-    fun saveListImage(@PathVariable("id") productId: Int,@RequestParam("image") listImage: MutableList<MultipartFile>):ResponseEntity<Boolean>
-    = ResponseEntity.ok(productService.saveListImage(productId, listImage))
+//    @PostMapping("/image/{id}")
+//   fun saveImage(@PathVariable("id")productId: Int,@RequestParam("image") imageFile: MultipartFile):ResponseEntity<Boolean>
+//   = ResponseEntity.ok(productService.saveImage(productId,imageFile))
+//
+//    @PostMapping("")
+//    fun addProduct(@RequestBody productDto: ProductDto):ResponseEntity<Boolean>
+//    {
+//        return ResponseEntity.ok(productService.addProduct(productDto))
+//    }
+//
+//    @PostMapping("/{id}")
+//    fun updateProduct(@PathVariable("id") productId: Int,@RequestBody productDto: ProductDto):ResponseEntity<Boolean>
+//    = ResponseEntity.ok(productService.updateProduct(productDto,productId))
+//
+//    @PostMapping("listImage/{id}")
+//    fun saveListImage(@PathVariable("id") productId: Int,@RequestParam("image") listImage: MutableList<MultipartFile>):ResponseEntity<Boolean>
+//    = ResponseEntity.ok(productService.saveListImage(productId, listImage))
 }

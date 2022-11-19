@@ -54,75 +54,75 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
         return true
     }
 
-    override fun updateProduct(productDto: ProductDto, productId: Int): Boolean {
-        if(productRepository.findById(productId).isPresent){
-            val images=productDto.listImage
-            val productDtoUD=ProductDto(
-                    productId=productId,
-                    userId=productDto.userId,
-                    categoryDetailId=productDto.categoryDetailId,
-                    productName=productDto.productName,
-                    productStatus=productDto.productStatus,
-                    avatar=productDto.avatar,
-                    description=productDto.description,
-                    amountProduct=productDto.amountProduct,
-                    priceProduct =productDto.priceProduct,
-                    priceDeposit=productDto.priceDeposit,
-            )
-            productRepository.save(toDtoEntity(productDtoUD))
-            val listImage=imageRepository.findImageByProductId(productId)
-            if (listImage !=null  ) {
-                for (imageData in listImage) {
-                     if (images != null) {
-                        for (image in images){
-                            if (imageData.imageId==image.imageId){
-                                println(image.imageUrl)
-                                imageData.imageUrl=image.imageUrl
-                                imageRepository.save(imageData)
-                            }
+//    override fun updateProduct(productDto: ProductDto, productId: Int): Boolean {
+//        if(productRepository.findById(productId).isPresent){
+//            val images=productDto.listImage
+//            val productDtoUD=ProductDto(
+//                    productId=productId,
+//                    userId=productDto.userId,
+//                    categoryDetailId=productDto.categoryDetailId,
+//                    productName=productDto.productName,
+//                    productStatus=productDto.productStatus,
+//                    avatar=productDto.avatar,
+//                    description=productDto.description,
+//                    amountProduct=productDto.amountProduct,
+//                    priceProduct =productDto.priceProduct,
+//                    priceDeposit=productDto.priceDeposit,
+//            )
+//            productRepository.save(toDtoEntity(productDtoUD))
+//            val listImage=imageRepository.findImageByProductId(productId)
+//            if (listImage !=null  ) {
+//                for (imageData in listImage) {
+//                     if (images != null) {
+//                        for (image in images){
+//                            if (imageData.imageId==image.imageId){
+//                                println(image.imageUrl)
+//                                imageData.imageUrl=image.imageUrl
+//                                imageRepository.save(imageData)
+//                            }
+//
+//                        }
+//                    }
+//                }
+//            }
+//
+//            return true
+//        }
+//        return false
+//    }
 
-                        }
-                    }
-                }
-            }
+//    override fun saveImage(productId: Int, imageFile: MultipartFile): Boolean {
+//        val product=productRepository.findById(productId).get()
+//        val staticPath=Paths.get("static")
+//        val imagePath=Paths.get("images")
+//        if(!exists(currentFolder.resolve(staticPath).resolve(imagePath))){
+//            createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
+//        }
+//        val file=currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
+//        newOutputStream(file).use { os -> os.write(imageFile.bytes) }
+//        product.avatar=imagePath.resolve(imageFile.originalFilename).toString()
+//        productRepository.save(product)
+//        return true
+//    }
 
-            return true
-        }
-        return false
-    }
-
-    override fun saveImage(productId: Int, imageFile: MultipartFile): Boolean {
-        val product=productRepository.findById(productId).get()
-        val staticPath=Paths.get("static")
-        val imagePath=Paths.get("images")
-        if(!exists(currentFolder.resolve(staticPath).resolve(imagePath))){
-            createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
-        }
-        val file=currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
-        newOutputStream(file).use { os -> os.write(imageFile.bytes) }
-        product.avatar=imagePath.resolve(imageFile.originalFilename).toString()
-        productRepository.save(product)
-        return true
-    }
-
-    override fun saveListImage(productId: Int, listImage: MutableList<MultipartFile>): Boolean {
-        val staticPath=Paths.get("static")
-        val imagePath=Paths.get("images")
-        if(!exists(currentFolder.resolve(staticPath).resolve(imagePath))){
-            createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
-        }
-        for (imageFile in listImage) {
-            val file = currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
-            newOutputStream(file).use { os -> os.write(imageFile.bytes) }
-            val imageSave=Image(
-                    productId=productId,
-                    imageUrl = imagePath.resolve(imageFile.originalFilename).toString()
-            )
-            imageRepository.save(imageSave)
-
-
-        }
-        return true
-    }
+//    override fun saveListImage(productId: Int, listImage: MutableList<MultipartFile>): Boolean {
+//        val staticPath=Paths.get("static")
+//        val imagePath=Paths.get("images")
+//        if(!exists(currentFolder.resolve(staticPath).resolve(imagePath))){
+//            createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
+//        }
+//        for (imageFile in listImage) {
+//            val file = currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
+//            newOutputStream(file).use { os -> os.write(imageFile.bytes) }
+//            val imageSave=Image(
+//                    productId=productId,
+//                    imageUrl = imagePath.resolve(imageFile.originalFilename).toString()
+//            )
+//            imageRepository.save(imageSave)
+//
+//
+//        }
+//        return true
+//    }
 
 }

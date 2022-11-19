@@ -32,10 +32,10 @@ class Product(
         var amountProduct:Int?=null,
 
         @Column(name = "price_product")
-        var priceProduct :Float?=null,
+        var priceProduct :Int?=null,
 
         @Column(name = "price_deposit")
-        var priceDeposit:Float?=null,
+        var priceDeposit:Int?=null,
 
 //        @ManyToOne(fetch = FetchType.LAZY)
 //        @JoinColumn(name = "category_detail_id",nullable = false,foreignKey = ForeignKey(name = "product_ibfk_2"))
