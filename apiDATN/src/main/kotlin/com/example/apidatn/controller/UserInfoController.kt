@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value=["/user"],produces = ["application/json;charset=UTF-8"])
 class UserInfoController (private val userInfoService: UserInfoService){
 
     @GetMapping("")

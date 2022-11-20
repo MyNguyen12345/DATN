@@ -27,7 +27,7 @@ class LoginController (private val customUserDetailService: CustomUserDetailServ
     @Autowired
     private lateinit var authenticationManager: AuthenticationManager
 
-    @PostMapping("/login")
+    @PostMapping(value = ["/login"],produces = ["application/json;charset=UTF-8"])
     fun loginSign(@RequestBody accountDto: AccountDto): ResponseTokenDto {
         if (SignKey.privateKey==null && SignKey.publicKey==null) {
             jwtSignKey.jwtWithRsaSign()

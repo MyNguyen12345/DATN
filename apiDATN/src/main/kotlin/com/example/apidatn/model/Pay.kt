@@ -11,8 +11,5 @@ class Pay (
         var payId:Int?=null,
 
         @Column(name = "pay_name")
-        var payName:String?=null,
-
-        @Column(name = "pay_status")
-        var payStatus:String?=null
+        var payName:String?=null
         )

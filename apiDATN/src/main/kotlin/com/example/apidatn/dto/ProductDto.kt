@@ -16,5 +16,5 @@ data class ProductDto (
         var priceProduct :Int?=null,
         var priceDeposit:Int?=null,
 //        var categoryDetail: CategoryDetail?=null,
-//        var listImage:MutableList<ImageDto>?=null
+        var listImage:MutableList<ImageDto>?=null
         )

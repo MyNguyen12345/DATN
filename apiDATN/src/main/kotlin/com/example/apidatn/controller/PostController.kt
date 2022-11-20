@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping(value=["/post"],produces = ["application/json;charset=UTF-8"])
 class PostController {
 
     @Autowired

@@ -9,7 +9,7 @@ interface ProductService {
     fun findAllByUserId(userId:Int):MutableList<ProductDto>
     fun findAllByCategoryDetailId(categoryDetailId:Int):MutableList<ProductDto>
     fun addProduct(productDto: ProductDto):Boolean
-//    fun updateProduct(productDto: ProductDto,productId: Int):Boolean
-//    fun saveImage(productId:Int, imageFile: MultipartFile):Boolean
-//    fun saveListImage(productId: Int,listImage:MutableList<MultipartFile>):Boolean
+    fun updateProduct(productDto: ProductDto,productId: Int):Boolean
+    fun saveImage(productId:Int, imageFile: MultipartFile):Boolean
+    fun saveListImage(productId: Int,listImage:MutableList<MultipartFile>):Boolean
 }

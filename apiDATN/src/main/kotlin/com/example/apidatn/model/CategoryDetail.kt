@@ -20,7 +20,7 @@ class CategoryDetail (
         @JoinColumn(name = "category_id",insertable = false,updatable = false)
         var category: Category?=null,
 
-//        @OneToMany(fetch = FetchType.LAZY,mappedBy = "category_detail",cascade =[CascadeType.MERGE,CascadeType.PERSIST])
+//        @OneToMany(mappedBy = "category_detail",cascade =[CascadeType.MERGE,CascadeType.PERSIST])
 //        var listProduct:MutableList<Product>?=null
 
         )

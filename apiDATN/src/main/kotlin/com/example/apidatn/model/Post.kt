@@ -22,5 +22,14 @@ class Post (
         var productId:Int?=null,
 
         @Column(name = "post_status")
-        var postStatus:String?=null
+        var postStatus:String?=null,
+
+        @ManyToOne()
+        @JoinColumn(name = "user_id",insertable = false,updatable = false)
+        var user: User?=null,
+
+        @OneToOne(cascade = [CascadeType.ALL])
+        @JoinColumn(name = "product_id",insertable = false,updatable = false)
+        var product: Product?=null
+
         )
