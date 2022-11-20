@@ -32,10 +32,10 @@ class Product(
         var amountProduct:Int?=null,
 
         @Column(name = "price_product")
-        var priceProduct :Int?=null,
+        var priceProduct :Float?=null,
 
         @Column(name = "price_deposit")
-        var priceDeposit:Int?=null,
+        var priceDeposit:Float?=null,
 
         @Column(name = "status")
         var status:String?=null,

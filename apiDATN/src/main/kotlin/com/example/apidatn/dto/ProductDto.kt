@@ -13,8 +13,8 @@ data class ProductDto (
         var avatar:String?=null,
         var description:String?=null,
         var amountProduct:Int?=null,
-        var priceProduct :Int?=null,
-        var priceDeposit:Int?=null,
+        var priceProduct :Float?=null,
+        var priceDeposit:Float?=null,
 //        var categoryDetail: CategoryDetail?=null,
         var listImage:MutableList<ImageDto>?=null
         )
