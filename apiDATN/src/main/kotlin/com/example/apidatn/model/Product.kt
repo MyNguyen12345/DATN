@@ -36,13 +36,18 @@ class Product(
 
         @Column(name = "price_deposit")
         var priceDeposit:Float?=null,
-
-//        @ManyToOne(fetch = FetchType.LAZY)
-//        @JoinColumn(name = "category_detail_id",nullable = false,foreignKey = ForeignKey(name = "product_ibfk_2"))
-//        var categoryDetail: CategoryDetail?=null,
-
+        
         @OneToMany(mappedBy = "product")
-        var listImage:MutableList<Image>?=null
+        var listImage:MutableList<Image>?=null,
+
+        @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+        @JoinColumn(name = "user_id",insertable = false,updatable = false)
+        var user: User? = null,
+
+        @ManyToOne()
+        @JoinColumn(name = "category_detail_id",insertable = false,updatable = false)
+        var categoryDetail: CategoryDetail? = null
+
 
 
 

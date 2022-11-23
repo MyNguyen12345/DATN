@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value=["/user"],produces = ["application/json;charset=UTF-8"])
 class UserInfoController (private val userInfoService: UserInfoService){
 
     @GetMapping("")

@@ -17,5 +17,8 @@ class Rating (
         var productId:Int?=null,
 
         @Column(name = "rating_star")
-        var ratingStar:Float?=null
+        var ratingStar:Float?=null,
+
+        @ManyToOne(fetch = FetchType.EAGER)
+        var user: User?=null
         )

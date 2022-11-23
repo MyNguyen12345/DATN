@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping(value=["/cart"],produces = ["application/json;charset=UTF-8"])
 class CartController {
     @Autowired
     private lateinit var cartService: CartService

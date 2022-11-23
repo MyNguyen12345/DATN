@@ -16,7 +16,7 @@ class RegisterController {
     @Autowired
     private lateinit var registerService: RegisterService
 
-    @PostMapping("/register")
+    @PostMapping(value=["/register"],produces = ["application/json;charset=UTF-8"])
     fun addUser(@RequestBody accountDto: AccountDto): ResponseEntity<AccountDto> {
         if (registerService.registerAccount(accountDto)){
             return ResponseEntity.ok(accountDto)

@@ -43,7 +43,10 @@ class User (
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "role_id",insertable = false,updatable = false)
-        var role:Role?=null
+        var role:Role?=null,
+
+//        @OneToMany(mappedBy = "product",cascade = [CascadeType.ALL],fetch = FetchType.LAZY)
+//        var listProduct:MutableList<Product>
 
 
         )

@@ -56,7 +56,6 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
 
     override fun updateProduct(productDto: ProductDto, productId: Int): Boolean {
         if(productRepository.findById(productId).isPresent){
-            val images=productDto.listImage
             val productDtoUD=ProductDto(
                     productId=productId,
                     userId=productDto.userId,
@@ -70,22 +69,6 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                     priceDeposit=productDto.priceDeposit,
             )
             productRepository.save(toDtoEntity(productDtoUD))
-            val listImage=imageRepository.findImageByProductId(productId)
-            if (listImage !=null  ) {
-                for (imageData in listImage) {
-                     if (images != null) {
-                        for (image in images){
-                            if (imageData.imageId==image.imageId){
-                                println(image.imageUrl)
-                                imageData.imageUrl=image.imageUrl
-                                imageRepository.save(imageData)
-                            }
-
-                        }
-                    }
-                }
-            }
-
             return true
         }
         return false
@@ -119,8 +102,6 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                     imageUrl = imagePath.resolve(imageFile.originalFilename).toString()
             )
             imageRepository.save(imageSave)
-
-
         }
         return true
     }

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/rating")
+@RequestMapping(value=["/rating"],produces = ["application/json;charset=UTF-8"])
 class RatingController {
 
     @Autowired

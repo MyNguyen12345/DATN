@@ -1,15 +1,16 @@
 package com.example.apidatn.controller
 
 import com.example.apidatn.dto.ProductDto
-import com.example.apidatn.model.Image
 import com.example.apidatn.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping(value= ["/product"],produces = ["application/json;charset=UTF-8"])
 class ProductController {
 
     @Autowired
@@ -17,7 +18,9 @@ class ProductController {
 
     @GetMapping()
     fun getAllProduct():ResponseEntity<MutableList<ProductDto>>
-    =ResponseEntity.ok(productService.getAllProduct())
+    {
+        return ResponseEntity.ok(productService.getAllProduct())
+    }
 
     @GetMapping("/{id}")
     fun getProductById(@PathVariable("id") productId:Int):ResponseEntity<ProductDto>
