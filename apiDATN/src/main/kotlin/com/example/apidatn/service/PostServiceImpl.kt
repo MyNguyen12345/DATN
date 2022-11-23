@@ -13,11 +13,16 @@ import com.example.apidatn.repository.ProductRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 import java.util.stream.Collectors
 
 @Service
 class PostServiceImpl():PostService {
+
+    private val  currentFolder = Paths.get(System.getProperty("user.dir"))
 
     @Autowired
     private lateinit var postRepository: PostRepository
@@ -46,19 +51,27 @@ class PostServiceImpl():PostService {
 
 
 
-    override fun newPost(newPostDto: NewPostDto): Boolean {
+
+    override fun newPost(userId: Int, postStatus: String, categoryDetailId: Int, productName: String, productStatus: String, avatar: MultipartFile, description: String, amountProduct: Int, priceProduct: Float, priceDeposit: Float, listImage: MutableList<MultipartFile>): Boolean {
         val postDate=Date(System.currentTimeMillis())
-        val userId=newPostDto.userId
+        val userId=userId
+        val staticPath= Paths.get("static")
+        val imagePath= Paths.get("images")
+        if(!Files.exists(currentFolder.resolve(staticPath).resolve(imagePath))){
+            Files.createDirectories(currentFolder.resolve(staticPath).resolve(imagePath))
+        }
+        val file=currentFolder.resolve(staticPath).resolve(imagePath).resolve(avatar.originalFilename)
+        Files.newOutputStream(file).use { os -> os.write(avatar.bytes) }
         val product=Product(
                 userId=userId,
-                categoryDetailId=newPostDto.categoryDetailId,
-                productName=newPostDto.productName,
-                productStatus=newPostDto.productStatus,
-                avatar=newPostDto.avatar,
-                description=newPostDto.description,
-                amountProduct=newPostDto.amountProduct,
-                priceProduct =newPostDto.priceProduct,
-                priceDeposit=newPostDto.priceDeposit,
+                categoryDetailId=categoryDetailId,
+                productName=productName,
+                productStatus=productStatus,
+                avatar=imagePath.resolve(avatar.originalFilename).toString(),
+                description=description,
+                amountProduct=amountProduct,
+                priceProduct =priceProduct,
+                priceDeposit=priceDeposit
         )
         productRepository.save(product)
         val productId=product.productId
@@ -70,17 +83,16 @@ class PostServiceImpl():PostService {
         )
         postRepository.save(post)
 
+        for (imageFile in listImage) {
+            val file = currentFolder.resolve(staticPath).resolve(imagePath).resolve(imageFile.originalFilename)
+            Files.newOutputStream(file).use { os -> os.write(imageFile.bytes) }
+            val imageSave=Image(
+                    productId=productId,
+                    imageUrl = imagePath.resolve(imageFile.originalFilename).toString()
+            )
+            imageRepository.save(imageSave)
 
-        val listImage=newPostDto.listImage
-        if (listImage != null) {
-            for (image in listImage){
-                val image=Image(
-                        imageUrl = image.imageUrl,
-                        productId = productId
-                )
-                println(image.productId)
-                imageRepository.save(image)
-            }
+
         }
 
         return true

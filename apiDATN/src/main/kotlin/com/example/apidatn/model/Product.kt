@@ -36,10 +36,7 @@ class Product(
 
         @Column(name = "price_deposit")
         var priceDeposit:Float?=null,
-
-        @Column(name = "status")
-        var status:String?=null,
-
+        
         @OneToMany(mappedBy = "product")
         var listImage:MutableList<Image>?=null,
 
