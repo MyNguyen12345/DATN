@@ -17,6 +17,10 @@ class UserInfoController (private val userInfoService: UserInfoService){
     @GetMapping("")
     fun getAllUser():ResponseEntity<MutableList<UserInfoDto>> = ResponseEntity.ok(userInfoService.getAllUser())
 
+    @GetMapping("/phone/{phone}")
+    fun userByPhone(@PathVariable("phone") phone:Int) :ResponseEntity<UserInfoDto>
+    = ResponseEntity.ok(userInfoService.userByPhone(phone))
+
     @GetMapping("/{userId}")
     fun getUserById(@PathVariable("userId") userId:Int):ResponseEntity<UserInfoDto> = ResponseEntity.ok(userInfoService.getUserById(userId))
 

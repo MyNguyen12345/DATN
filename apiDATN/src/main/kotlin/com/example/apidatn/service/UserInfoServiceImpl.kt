@@ -91,4 +91,8 @@ class UserInfoServiceImpl(private val userRepository: UserRepository):UserInfoSe
         )
 
     }
+
+    override fun userByPhone(phone: Int): UserInfoDto {
+        return toEntityDto(userRepository.findUserByPhone(phone).get())
+    }
 }

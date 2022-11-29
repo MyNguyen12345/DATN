@@ -15,4 +15,5 @@ interface UserInfoService {
     fun updateUserStatus(userId: Int, accountStatus:String):Boolean
     fun updateImage(userId:Int,userImage:MultipartFile):Boolean
     fun countUser():UserCountDto
+    fun userByPhone(phone:Int):UserInfoDto
 }
