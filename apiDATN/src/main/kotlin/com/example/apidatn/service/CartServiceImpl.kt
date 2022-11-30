@@ -71,7 +71,7 @@ class CartServiceImpl: CartService {
     override fun deleteCart(cartId: Int): DeleteDto {
         cartRepository.deleteById(cartId)
         return DeleteDto(
-                boolean = "true"
+                boolean = true
         )
     }
 }
