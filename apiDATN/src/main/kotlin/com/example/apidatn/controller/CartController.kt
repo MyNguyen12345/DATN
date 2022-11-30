@@ -25,7 +25,7 @@ class CartController {
     fun addCart(@PathVariable("id") userId:Int,@RequestBody cartDto: CartDto):ResponseEntity<Boolean>
     = ResponseEntity.ok(cartService.addCart(userId, cartDto))
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     fun deleteCart(@PathVariable("id") cartId:Int):ResponseEntity<Boolean>
     = ResponseEntity.ok(cartService.deleteCart(cartId))
 }
