@@ -7,5 +7,5 @@ interface CartService {
     fun addCart(userId:Int,cartDto: CartDto):Boolean
     fun getAllCart(userId: Int):MutableList<CartDto>
     fun getAmountCart(userId: Int):Int
-    fun deleteCart(cartId:Int):DeleteDto
+    fun deleteCart(cartId:Int):Boolean
 }
