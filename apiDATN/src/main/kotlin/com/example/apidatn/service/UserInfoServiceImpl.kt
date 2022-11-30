@@ -15,7 +15,10 @@ import java.util.stream.Collector
 import java.util.stream.Collectors
 
 @Service
-class UserInfoServiceImpl(private val userRepository: UserRepository):UserInfoService {
+class UserInfoServiceImpl():UserInfoService {
+
+    @Autowired
+    private lateinit var userRepository: UserRepository
 
 
     private val currentFolder = Paths.get(System.getProperty("user.dir"))
