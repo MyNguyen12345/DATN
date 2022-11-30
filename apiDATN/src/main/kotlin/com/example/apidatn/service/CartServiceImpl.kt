@@ -1,9 +1,6 @@
 package com.example.apidatn.service
 
-import com.example.apidatn.dto.CartDto
-import com.example.apidatn.dto.CategoryDetailDto
-import com.example.apidatn.dto.ProductDto
-import com.example.apidatn.dto.UserInfoDto
+import com.example.apidatn.dto.*
 import com.example.apidatn.model.Cart
 import com.example.apidatn.model.CategoryDetail
 import com.example.apidatn.model.Product
@@ -71,8 +68,10 @@ class CartServiceImpl: CartService {
         return cartRepository.getAmountCart(userId)
     }
 
-    override fun deleteCart(cartId: Int): Boolean {
+    override fun deleteCart(cartId: Int): DeleteDto {
         cartRepository.deleteById(cartId)
-        return true
+        return DeleteDto(
+                boolean = true
+        )
     }
 }
