@@ -43,4 +43,9 @@ class CartServiceImpl: CartService {
     override fun getAmountCart(userId: Int): Int {
         return cartRepository.getAmountCart(userId)
     }
+
+    override fun deleteCart(cartId: Int): Boolean {
+        cartRepository.deleteById(cartId)
+        return true
+    }
 }
