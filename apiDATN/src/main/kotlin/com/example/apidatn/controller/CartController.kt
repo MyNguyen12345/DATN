@@ -1,6 +1,7 @@
 package com.example.apidatn.controller
 
 import com.example.apidatn.dto.CartDto
+import com.example.apidatn.dto.DeleteDto
 import com.example.apidatn.service.CartService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -25,6 +26,6 @@ class CartController {
     = ResponseEntity.ok(cartService.addCart(userId, cartDto))
 
     @PostMapping("/delete/{id}")
-    fun deleteCart(@PathVariable("id") cartId:Int):ResponseEntity<Boolean>
+    fun deleteCart(@PathVariable("id") cartId:Int):ResponseEntity<DeleteDto>
     = ResponseEntity.ok(cartService.deleteCart(cartId))
 }
