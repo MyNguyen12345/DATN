@@ -30,8 +30,8 @@ class ProductController {
     fun findAllByUserId(@RequestParam("userId") userId:Int):ResponseEntity<MutableList<ProductDto>>
     = ResponseEntity.ok(productService.findAllByUserId(userId))
 
-    @GetMapping("/list/cate/{cateDetailId}")
-    fun findAllByCategoryDetailId(@RequestParam("cateDetailId") categoryDetailId:Int, @PathVariable cateDetailId: String):ResponseEntity<MutableList<ProductDto>>
+    @GetMapping("/list/cate")
+    fun findAllByCategoryDetailId(@RequestParam("cateDetailId") categoryDetailId:Int):ResponseEntity<MutableList<ProductDto>>
             = ResponseEntity.ok(productService.findAllByCategoryDetailId(categoryDetailId))
 
     @PostMapping("/image/{id}")
