@@ -44,12 +44,12 @@ class UserInfoServiceImpl():UserInfoService {
         val user = userRepository.findById(userId).get()
         if (userRepository.findById(userId).isPresent) {
             user.userId = userId
-            user.accountStatus = userInfo.accountStatus
-            user.avatar = userInfo.avatar
+            user.accountStatus = user.accountStatus
+            user.avatar = user.avatar
             user.address = userInfo.address
             user.birthday = userInfo.birthday
-            user.dateJoin = userInfo.dateJoin
-            user.phone = userInfo.phone
+            user.dateJoin = user.dateJoin
+            user.phone = user.phone
             user.username = userInfo.username
             user.gender = userInfo.gender
             user.roleId = 2
