@@ -10,7 +10,6 @@ class BillDetail (
         @Column(name = "bill_detail_id")
         var billDetailId:Int?=null,
 
-
         @Column(name = "product_id")
         var productId:Int?=null,
 
@@ -23,8 +22,11 @@ class BillDetail (
         @Column(name = "money")
         var money:Float?=null,
 
+        @Column(name = "bill_id")
+        var billId:Int ?=null,
+
         @ManyToOne(fetch = FetchType.LAZY,cascade = [CascadeType.MERGE])
-        @JoinColumn(name = "bill_id")
+        @JoinColumn(name = "bill_id",insertable = false,updatable = false)
         var bill:Bill?=null,
 
         @ManyToOne(fetch=FetchType.LAZY,cascade = [CascadeType.MERGE])

@@ -30,4 +30,5 @@ interface UserRepository:JpaRepository<User,Int> {
     fun countByUserIdStatus():Int
 
 
+
 }

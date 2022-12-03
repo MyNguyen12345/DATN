@@ -5,6 +5,7 @@ import com.example.apidatn.model.Image
 import com.example.apidatn.model.Product
 import com.example.apidatn.repository.ImageRepository
 import com.example.apidatn.repository.ProductRepository
+import com.example.apidatn.repository.RatingRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -19,6 +20,9 @@ import java.util.stream.Collectors
 class ProductServiceImpl(private val productRepository: ProductRepository):ProductService {
 
     private val  currentFolder = Paths.get(System.getProperty("user.dir"))
+
+    @Autowired
+    private lateinit var ratingRepository: RatingRepository
     @Autowired
     private lateinit var imageRepository: ImageRepository
 
@@ -29,8 +33,37 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
     fun toDtoEntity(productDto: ProductDto): Product =mapper.map(productDto,Product::class.java)
 
     override fun getAllProduct(): MutableList<ProductDto> {
-        return productRepository.findAll().stream().map { product:Product->toEntityDto(product) }
+        var list :MutableList<ProductDto> = mutableListOf()
+        var rating=0F
+        var userRating=0
+        var listProduct=productRepository.findAll().stream().map { product:Product->toEntityDto(product) }
                 .collect(Collectors.toList())
+        for (product in  listProduct){
+            if(ratingRepository.findByProductId(product.productId!!).size>0){
+                 rating = ratingRepository.avgRating(product.productId!!)
+                  userRating= ratingRepository.amountRatingByUser(product.productId!!)
+            }else{
+                rating =0F
+                userRating=0
+            }
+            list.add(ProductDto(
+                    productId = product.productId,
+                    userId = product.userId,
+                    categoryDetailId = product.categoryDetailId,
+                    productName = product.productName,
+                    productStatus = product.productStatus,
+                    avatar = product.avatar,
+                    description = product.description,
+                    amountProduct = product.amountProduct,
+                    priceProduct = product.priceProduct,
+                    priceDeposit = product.priceDeposit,
+                    rating=rating,
+                    userRating=userRating,
+                    listImage = product.listImage
+            ))
+        }
+
+        return list
     }
 
     override fun getProductById(productId: Int): ProductDto {

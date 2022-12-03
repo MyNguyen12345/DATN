@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface BillDetailRepository:JpaRepository<BillDetail,Int> {
+
+    fun  findAllByBillId(billId:Int):List<BillDetail>
 }
