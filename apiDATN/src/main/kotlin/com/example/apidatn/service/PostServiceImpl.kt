@@ -53,7 +53,7 @@ class PostServiceImpl():PostService {
 
 
     override fun newPost(userId: Int, postStatus: String, categoryDetailId: Int, productName: String, productStatus: String, avatar: MultipartFile, description: String, amountProduct: Int, priceProduct: Float, priceDeposit: Float, listImage: MutableList<MultipartFile>): Boolean {
-        val postDate=Date(System.currentTimeMillis())
+        val postDate=System.currentTimeMillis().toString()
         val userId=userId
         val staticPath= Paths.get("static")
         val imagePath= Paths.get("images")

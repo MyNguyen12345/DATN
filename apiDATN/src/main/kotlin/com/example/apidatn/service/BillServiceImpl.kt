@@ -48,7 +48,7 @@ class BillServiceImpl:BillService {
 //        }
         var bill= Bill(
                 billStatusId = 1,
-                dateBill = Date(System.currentTimeMillis()),
+                dateBill = System.currentTimeMillis().toString(),
                 addressBill = billPayDto.addressBill,
                 pay_id = billPayDto.payId,
                 totalPrice = billPayDto.priceTotal,

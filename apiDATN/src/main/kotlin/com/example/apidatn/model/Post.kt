@@ -13,7 +13,7 @@ class Post (
         var postId:Int?=null,
 
         @Column(name = "post_date")
-        var postDate:Date?=null,
+        var postDate:String?=null,
 
         @Column(name = "user_id")
         var userId:Int?=null,

@@ -19,7 +19,7 @@ class Bill (
         var userId:Int?=null,
 
         @Column(name = "date_bill")
-        var dateBill:Date?=null,
+        var dateBill:String?=null,
 
         @Column(name = "total_price")
         var totalPrice:Float?=null,

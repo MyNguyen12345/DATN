@@ -24,10 +24,10 @@ class User (
         var address:String?=null,
 
         @Column(name = "birthday")
-        var birthday: Date?=null,
+        var birthday: String?=null,
 
         @Column(name = "date_join")
-        var dateJoin:Date?=null,
+        var dateJoin:String?=null,
 
         @Column(name = "account_status")
         var accountStatus:String?=null,
