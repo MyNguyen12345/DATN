@@ -36,6 +36,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("org.postgresql:postgresql:42.5.0")
     implementation("org.apache.maven.plugins:maven-jar-plugin:3.3.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 
 
 }

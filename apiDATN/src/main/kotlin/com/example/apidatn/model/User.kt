@@ -1,5 +1,6 @@
 package com.example.apidatn.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
@@ -24,10 +25,10 @@ class User (
         var address:String?=null,
 
         @Column(name = "birthday")
-        var birthday: String?=null,
+        var birthday: Date?=null,
 
         @Column(name = "date_join")
-        var dateJoin:String?=null,
+        var dateJoin:Date?=null,
 
         @Column(name = "account_status")
         var accountStatus:String?=null,

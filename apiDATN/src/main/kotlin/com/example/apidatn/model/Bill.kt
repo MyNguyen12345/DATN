@@ -1,11 +1,12 @@
 package com.example.apidatn.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "bill")
-class Bill (
+class Bill(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,7 @@ class Bill (
         var userId:Int?=null,
 
         @Column(name = "date_bill")
-        var dateBill:String?=null,
+        var dateBill: Date? =null,
 
         @Column(name = "total_price")
         var totalPrice:Float?=null,

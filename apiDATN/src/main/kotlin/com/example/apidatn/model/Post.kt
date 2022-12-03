@@ -1,5 +1,6 @@
 package com.example.apidatn.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.util.*
 import javax.persistence.*
 
@@ -13,7 +14,7 @@ class Post (
         var postId:Int?=null,
 
         @Column(name = "post_date")
-        var postDate:String?=null,
+        var postDate:Date?=null,
 
         @Column(name = "user_id")
         var userId:Int?=null,

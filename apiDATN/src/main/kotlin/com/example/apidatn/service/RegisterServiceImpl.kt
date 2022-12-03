@@ -22,7 +22,7 @@ class RegisterServiceImpl(private val userRepository: UserRepository):RegisterSe
             account.roleId=2
             account.password= encoder.encode(accountDto.password)
             account.accountStatus="active"
-            account.dateJoin= System.currentTimeMillis().toString()
+            account.dateJoin= Date(System.currentTimeMillis())
             userRepository.save(account)
             return true
         }

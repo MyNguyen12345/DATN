@@ -3,8 +3,6 @@ package com.example.apidatn.service
 import com.example.apidatn.dto.*
 import com.example.apidatn.model.Bill
 import com.example.apidatn.model.BillDetail
-import com.example.apidatn.model.Cart
-import com.example.apidatn.model.Product
 import com.example.apidatn.repository.BillDetailRepository
 import com.example.apidatn.repository.BillRepository
 import com.example.apidatn.repository.CartRepository
@@ -48,7 +46,7 @@ class BillServiceImpl:BillService {
 //        }
         var bill= Bill(
                 billStatusId = 1,
-                dateBill = System.currentTimeMillis().toString(),
+                dateBill = Date(System.currentTimeMillis()),
                 addressBill = billPayDto.addressBill,
                 pay_id = billPayDto.payId,
                 totalPrice = billPayDto.priceTotal,
