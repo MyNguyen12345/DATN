@@ -1,6 +1,7 @@
 package com.example.apidatn.service
 
 import com.example.apidatn.dto.CartDto
+import com.example.apidatn.dto.CartIdDto
 import com.example.apidatn.dto.DeleteDto
 
 interface CartService {
@@ -8,4 +9,5 @@ interface CartService {
     fun getAllCart(userId: Int):MutableList<CartDto>
     fun getAmountCart(userId: Int):Int
     fun deleteCart(cartId:Int):Boolean
+    fun payListCart(listCartId:List<CartIdDto>):Float
 }

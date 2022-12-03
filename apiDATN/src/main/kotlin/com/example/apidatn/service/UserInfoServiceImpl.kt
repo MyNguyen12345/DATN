@@ -1,9 +1,9 @@
 package com.example.apidatn.service
 
-import com.example.apidatn.dto.UserCountDto
+import com.example.apidatn.dto.StatisticsDto
 import com.example.apidatn.dto.UserInfoDto
 import com.example.apidatn.model.User
-import com.example.apidatn.repository.RoleRepository
+import com.example.apidatn.repository.BillRepository
 import com.example.apidatn.repository.UserRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.stream.Collector
 import java.util.stream.Collectors
 
 @Service
@@ -19,6 +18,9 @@ class UserInfoServiceImpl():UserInfoService {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var billRepository: BillRepository
 
 
     private val currentFolder = Paths.get(System.getProperty("user.dir"))
@@ -87,10 +89,11 @@ class UserInfoServiceImpl():UserInfoService {
         return true
     }
 
-    override fun countUser(): UserCountDto {
-        return  UserCountDto(
+    override fun statistics (): StatisticsDto {
+        return  StatisticsDto(
                 countUser = userRepository.countByUserId(),
-                countUserStatus = userRepository.countByUserIdStatus()
+                countUserStatus = userRepository.countByUserIdStatus(),
+                countOder = billRepository.countByOder()
         )
 
     }

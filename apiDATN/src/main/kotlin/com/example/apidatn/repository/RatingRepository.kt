@@ -8,7 +8,10 @@ import java.util.*
 
 @Repository
 interface RatingRepository:JpaRepository<Rating,Int> {
-    fun findRatingByProductId(productId:Int):Optional<Rating>
+    fun findByProductId(productId:Int):MutableList<Rating>
+
+    @Query(value = "select count(user_id) from rating  where  product_id =? ",nativeQuery = true)
+    fun amountRatingByUser(productId: Int):Int
 
     @Query(value = "SELECT AVG(rating_star)FROM rating where product_id=?",nativeQuery = true)
     fun avgRating(productId: Int):Float

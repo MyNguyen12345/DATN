@@ -1,9 +1,7 @@
 package com.example.apidatn.controller
 
-import com.example.apidatn.dto.AccountDto
-import com.example.apidatn.dto.UserCountDto
+import com.example.apidatn.dto.StatisticsDto
 import com.example.apidatn.dto.UserInfoDto
-import com.example.apidatn.model.User
 import com.example.apidatn.service.UserInfoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -30,8 +28,8 @@ class UserInfoController (private val userInfoService: UserInfoService){
     @GetMapping("/role")
     fun getAllUserRole():ResponseEntity<MutableList<UserInfoDto>> = ResponseEntity.ok(userInfoService.getAllUserRole())
 
-    @GetMapping("/count")
-    fun countUser():ResponseEntity<UserCountDto> = ResponseEntity.ok(userInfoService.countUser())
+    @GetMapping("/statistics")
+    fun countUser():ResponseEntity<StatisticsDto> = ResponseEntity.ok(userInfoService.statistics())
 
 
     @PostMapping("/{userId}")
