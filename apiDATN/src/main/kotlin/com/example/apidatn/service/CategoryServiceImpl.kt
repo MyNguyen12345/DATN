@@ -19,13 +19,6 @@ class CategoryServiceImpl(private  val categoryRepository: CategoryRepository):C
     fun toDtoEntity(categoryDto: CategoryDto): Category =mapper.map(categoryDto, Category::class.java)
 
     override fun getAllCategory(): MutableList<CategoryDto> {
-        val cate= categoryRepository.findAll()
-        for (o in cate){
-            for (i in o.categoryDetail!!){
-                println(i.categoryDetailName)
-
-            }
-        }
         return categoryRepository.findAll().stream().map { category:Category->toEntityDto(category) }.collect(Collectors.toList())
     }
 

@@ -6,6 +6,7 @@ import com.example.apidatn.model.Product
 import com.example.apidatn.model.User
 import com.example.apidatn.repository.CartRepository
 import com.example.apidatn.repository.ProductRepository
+import com.example.apidatn.repository.RatingRepository
 import com.example.apidatn.repository.UserRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,6 +32,9 @@ class CartServiceImpl: CartService {
 
     @Autowired
     private  lateinit var  userRepository: UserRepository
+
+    @Autowired
+    private  lateinit var ratingRepository:RatingRepository
 
 
     override fun addCart(userId: Int, cartDto: CartDto): Boolean {
@@ -67,6 +71,13 @@ class CartServiceImpl: CartService {
         if (listCartDe != null) {
             for (cart in listCartDe){
                 cart.product= cart.productId?.let { productRepository.findById(it).get() }?.let { toEntityDtoProduct(it) }
+                if(ratingRepository.findByProductId(cart.product?.productId!!).size>0){
+                    cart.product?.rating = ratingRepository.avgRating(cart.product?.productId!!)
+                    cart.product?.userRating= ratingRepository.amountRatingByUser(cart.product?.productId!!)
+                }else{
+                    cart.product?.rating =0F
+                    cart.product?.userRating=0
+                }
 
             }
                 list.add(
@@ -87,6 +98,13 @@ class CartServiceImpl: CartService {
                 if (listCartDe != null) {
                     for (cart in listCartDe){
                         cart.product= cart.productId?.let { productRepository.findById(it).get() }?.let { toEntityDtoProduct(it) }
+                        if(ratingRepository.findByProductId(cart.product?.productId!!).size>0){
+                            cart.product?.rating = ratingRepository.avgRating(cart.product?.productId!!)
+                            cart.product?.userRating= ratingRepository.amountRatingByUser(cart.product?.productId!!)
+                        }else{
+                            cart.product?.rating =0F
+                            cart.product?.userRating=0
+                        }
 
                     }
                     list.add(
