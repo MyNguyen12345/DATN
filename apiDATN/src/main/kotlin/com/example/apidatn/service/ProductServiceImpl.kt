@@ -32,12 +32,14 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
 
     fun toDtoEntity(productDto: ProductDto): Product =mapper.map(productDto,Product::class.java)
 
-    override fun getAllProduct(): MutableList<ProductDto> {
+    override fun getAllProduct(phone:Int): MutableList<ProductDto> {
         var list :MutableList<ProductDto> = mutableListOf()
         var rating=0F
         var userRating=0
-        var listProduct=productRepository.findAll().stream().map { product:Product->toEntityDto(product) }
+        var listProduct=productRepository.listProduct(phone)
+                .stream().map { product:Product->toEntityDto(product) }
                 .collect(Collectors.toList())
+        println(listProduct)
         for (product in  listProduct){
             if(ratingRepository.findByProductId(product.productId!!).size>0){
                  rating = ratingRepository.avgRating(product.productId!!)

@@ -31,5 +31,6 @@ class BillDetail (
 
         @ManyToOne(fetch=FetchType.LAZY,cascade = [CascadeType.MERGE])
         @JoinColumn(name = "product_id",insertable = false,updatable = false)
-        var product: Product?=null
+        var product: Product?=null,
+
         )

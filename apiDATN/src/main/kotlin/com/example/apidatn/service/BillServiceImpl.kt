@@ -3,14 +3,13 @@ package com.example.apidatn.service
 import com.example.apidatn.dto.*
 import com.example.apidatn.model.Bill
 import com.example.apidatn.model.BillDetail
-import com.example.apidatn.repository.BillDetailRepository
-import com.example.apidatn.repository.BillRepository
-import com.example.apidatn.repository.CartRepository
-import com.example.apidatn.repository.ProductRepository
+import com.example.apidatn.model.User
+import com.example.apidatn.repository.*
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
 
 @Service
 class BillServiceImpl:BillService {
@@ -27,7 +26,14 @@ class BillServiceImpl:BillService {
     @Autowired
     private  lateinit var productRepository: ProductRepository
 
+    @Autowired
+    private  lateinit var userRepository: UserRepository
+
     private val mapper: ModelMapper = ModelMapper()
+
+
+    fun toEntityDto(user: User): UserInfoDto = mapper.map(user, UserInfoDto::class.java)
+
 
 
     fun toDtoEntityBill(billDto: BillDto): Bill =mapper.map(billDto, Bill::class.java)
@@ -39,11 +45,6 @@ class BillServiceImpl:BillService {
     fun toEntityDtoBillDetail(billDetail: BillDetail): BillDetailDto = mapper.map(billDetail, BillDetailDto::class.java)
 
     override fun postBill(billPayDto: BillPayDto): Boolean {
-//        var pay=0F
-//        for ( index in 0 until billPayDto.listProductId!!.size){
-//            var price=cartRepository.payCartId(billPayDto.listProductId!![index].productId)
-//            pay += price
-//        }
         var bill= Bill(
                 billStatusId = 1,
                 dateBill = Date(System.currentTimeMillis()),
@@ -67,8 +68,56 @@ class BillServiceImpl:BillService {
     }
 
     override fun getBillUserId(userId: Int): BillDto {
-        return toEntityDtoBill(billRepository.findByUserId(userId))
+        var billDto=toEntityDtoBill(billRepository.findByUserId(userId))
+         billDto.listBillDetail=listBillDetail(billDto.billId!!)
+        return billDto
     }
 
+    override fun getBillStatus(billStatusId: Int): List<BillDto> {
+        var listBillDto=billRepository.findAllByBillStatusId(billStatusId).stream().map { bill:Bill->toEntityDtoBill(bill) }
+                .collect(Collectors.toList())
+        var list:MutableList<BillDto> = mutableListOf()
 
+        for (bill in listBillDto){
+            bill.listBillDetail=listBillDetail(bill.billId!!)
+            list.add(bill)
+
+        }
+        return list
+    }
+
+    override fun updateBillStatus(billStatusId: Int, billId: Int): Boolean {
+        if(billRepository.findById(billId).isPresent){
+            var billDto = billRepository.findById(billId).get()
+            billDto.billStatusId=billStatusId
+            billRepository.save(billDto)
+            return true
+
+        }
+        return false
+    }
+
+    fun listBillDetail(billId: Int): MutableList<BillDetailDto>? {
+        var listBillDetailDto=billDetailRepository.findAllByBillId(billId).stream()
+                .map { billDetail:BillDetail->toEntityDtoBillDetail(billDetail) }.collect(Collectors.toList())
+        var list:MutableList<BillDetailDto> = mutableListOf()
+        for (billDetail in listBillDetailDto){
+            var userInfoDto=toEntityDto(userRepository.findById(billDetail.product?.userId!!).get())
+            list.add(
+                    BillDetailDto(
+                            billDetailId = billDetail.billDetailId,
+                            productId = billDetail.productId,
+                            amountBuy = billDetail.amountBuy,
+                            moneyNow = billDetail.moneyNow,
+                            money = billDetail.money,
+                            product = billDetail.product,
+                            userInfoDto=userInfoDto
+                    )
+            )
+        }
+
+        return list
+    }
 }
+
+

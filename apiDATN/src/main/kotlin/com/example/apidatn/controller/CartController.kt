@@ -3,6 +3,7 @@ package com.example.apidatn.controller
 import com.example.apidatn.dto.CartDto
 import com.example.apidatn.dto.CartIdDto
 import com.example.apidatn.dto.DeleteDto
+import com.example.apidatn.dto.ListCartDto
 import com.example.apidatn.service.CartService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,7 @@ class CartController {
     private lateinit var cartService: CartService
 
     @GetMapping("/{id}")
-    fun getAllCartByUserId(@PathVariable("id") userId: Int):ResponseEntity<MutableList<CartDto>>
+    fun getAllCartByUserId(@PathVariable("id") userId: Int):ResponseEntity<MutableList<ListCartDto>>
     = ResponseEntity.ok(cartService.getAllCart(userId ))
 
 

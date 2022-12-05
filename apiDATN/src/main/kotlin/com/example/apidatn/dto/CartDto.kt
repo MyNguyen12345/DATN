@@ -8,5 +8,5 @@ data class CartDto (
         var productId:Int?=null,
         var amountProduct:Int?=null,
         var product: ProductDto?=null,
-        var user: UserInfoDto?=null
+//        var user: UserInfoDto?=null
         )

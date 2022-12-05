@@ -10,6 +10,9 @@ interface ProductRepository:JpaRepository<Product,Int> {
     fun findAllByUserId(userId:Int):MutableList<Product>
     fun findAllByCategoryDetailId(categoryDetailId:Int):MutableList<Product>
 
+    @Query(value = "select product.* from product join user_info  on product.user_id =user_info.user_id where not user_info.phone =?",nativeQuery = true)
+    fun listProduct(phone:Int):MutableList<Product>
+
     @Query(value = "SELECT product.* FROM product join post on product.product_id=post.product_id where post.post_status='active'",nativeQuery = true)
     fun findAllProductByPostStatus():MutableList<Product>
 }

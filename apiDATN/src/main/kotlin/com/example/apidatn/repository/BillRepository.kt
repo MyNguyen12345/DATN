@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository
 interface BillRepository:JpaRepository<Bill,Int> {
     fun findByUserId(userId:Int):Bill
 
+    fun findAllByBillStatusId(billStatusId:Int):List<Bill>
+
     @Query(value = "select count(distinct user_id) from bill",nativeQuery = true)
     fun countByOder():Int
 }

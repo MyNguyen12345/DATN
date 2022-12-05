@@ -18,6 +18,15 @@ class BillController {
     fun getBillUserId(@PathVariable("id") userId:Int):ResponseEntity<BillDto>
     =ResponseEntity.ok(billService.getBillUserId(userId))
 
+
+    @GetMapping("/status/{id}")
+    fun listBillStatus(@PathVariable("id") billStatusId:Int):ResponseEntity<List<BillDto>>
+    = ResponseEntity.ok(billService.getBillStatus(billStatusId))
+
+    @PostMapping("/{id}")
+    fun updateBillStatus(@PathVariable("id") billId:Int,@RequestParam("billStatusId") billStatusId:Int) :
+            ResponseEntity<Boolean> = ResponseEntity.ok(billService.updateBillStatus(billStatusId, billId))
+
     @PostMapping("")
     fun postBill(@RequestBody billPayDto: BillPayDto):ResponseEntity<Boolean>
     = ResponseEntity.ok(billService.postBill(billPayDto))

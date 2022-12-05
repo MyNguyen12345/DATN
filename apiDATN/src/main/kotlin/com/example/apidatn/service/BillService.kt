@@ -7,4 +7,6 @@ import com.example.apidatn.dto.CartIdDto
 interface BillService {
     fun postBill(billPayDto: BillPayDto):Boolean
     fun getBillUserId(userId:Int):BillDto
+    fun getBillStatus(billStatusId:Int):List<BillDto>
+    fun updateBillStatus(billStatusId: Int,billId:Int):Boolean
 }

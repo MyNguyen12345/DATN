@@ -16,10 +16,10 @@ class ProductController {
     @Autowired
     private lateinit var productService:ProductService
 
-    @GetMapping()
-    fun getAllProduct():ResponseEntity<MutableList<ProductDto>>
+    @GetMapping("/phone/{id}")
+    fun getAllProduct(@PathVariable("id") phone:Int ):ResponseEntity<MutableList<ProductDto>>
     {
-        return ResponseEntity.ok(productService.getAllProduct())
+        return ResponseEntity.ok(productService.getAllProduct(phone))
     }
 
     @GetMapping("/{id}")

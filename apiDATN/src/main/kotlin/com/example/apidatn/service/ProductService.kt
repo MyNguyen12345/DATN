@@ -4,7 +4,7 @@ import com.example.apidatn.dto.ProductDto
 import org.springframework.web.multipart.MultipartFile
 
 interface ProductService {
-    fun getAllProduct():MutableList<ProductDto>
+    fun getAllProduct(phone:Int):MutableList<ProductDto>
     fun getProductById(productId:Int):ProductDto
     fun findAllByUserId(userId:Int):MutableList<ProductDto>
     fun findAllByCategoryDetailId(categoryDetailId:Int):MutableList<ProductDto>
