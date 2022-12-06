@@ -43,9 +43,9 @@ class CartServiceImpl: CartService {
         if (userRepository.findById(userId).isPresent) {
 
             if (cartRepository.findByProductId(cartDto.productId!!).isPresent) {
-                var cart = cartDto.productId?.let { cartRepository.findByProductId(it).get() }
+                val cart = cartDto.productId?.let { cartRepository.findByProductId(it).get() }
                 cart?.userId = userId
-                var amount = cart?.amountProduct!! + cartDto.amountProduct!!
+                val amount = cart?.amountProduct!! + cartDto.amountProduct!!
                 cart.amountProduct = amount
                 cartRepository.save(cart)
             } else {
@@ -62,12 +62,13 @@ class CartServiceImpl: CartService {
 
 
     override fun getAllCart(userId: Int): MutableList<ListCartDto> {
-        var listcart = cartRepository.findAllByUserId(userId)
+        val listcart = cartRepository.findAllByUserId(userId)
+        val list:MutableList<ListCartDto> = mutableListOf()
 
-        var list:MutableList<ListCartDto> = mutableListOf()
-        var product0=productRepository.findById(listcart[0].productId!!).get()
-        var listCartDe=product0?.userId?.let { cartRepository.listCartUserId(it) }
+        val productA=productRepository.findById(listcart[0].productId!!).get()
+        val listCartDe=productA?.userId?.let { cartRepository.listCartUserId(it) }
                 ?.stream()?.map { cart:Cart->toEntityDto(cart)}?.collect(Collectors.toList())
+
         if (listCartDe != null) {
             for (cart in listCartDe){
                 cart.product= cart.productId?.let { productRepository.findById(it).get() }?.let { toEntityDtoProduct(it) }
@@ -83,21 +84,24 @@ class CartServiceImpl: CartService {
                 list.add(
                         ListCartDto(
                                 listCart=listCartDe ,
-                                user = toEntityDtoUser(userRepository.findById(product0?.userId!!).get())
+                                user = toEntityDtoUser(userRepository.findById(productA?.userId!!).get())
                         )
                 )
         }
         for (index in listcart.size-1 downTo 1){
             var product2=productRepository.findById(listcart[index].productId!!).get()
             var product3=productRepository.findById(listcart[index-1].productId!!).get()
+            print(index)
 
             if(product2.userId!=product3.userId){
 
                 var listCartDe=product2?.userId?.let { cartRepository.listCartUserId(it) }
                         ?.stream()?.map { cart:Cart->toEntityDto(cart)}?.collect(Collectors.toList())
+
                 if (listCartDe != null) {
                     for (cart in listCartDe){
                         cart.product= cart.productId?.let { productRepository.findById(it).get() }?.let { toEntityDtoProduct(it) }
+
                         if(ratingRepository.findByProductId(cart.product?.productId!!).size>0){
                             cart.product?.rating = ratingRepository.avgRating(cart.product?.productId!!)
                             cart.product?.userRating= ratingRepository.amountRatingByUser(cart.product?.productId!!)
