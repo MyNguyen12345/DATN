@@ -20,11 +20,11 @@ class Cart (
     var amountProduct:Int?=null,
 
     @ManyToOne
-    @JoinColumn(name = "user_id",insertable = false,updatable = false)
+    @JoinColumn(name = "product_id",insertable = false,updatable = false)
     var product:Product?=null,
 
     @ManyToOne
-    @JoinColumn(name = "product_id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_id",insertable = false,updatable = false)
     var user: User?=null
 
     )
