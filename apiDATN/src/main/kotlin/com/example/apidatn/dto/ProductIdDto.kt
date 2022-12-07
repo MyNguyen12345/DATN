@@ -1,5 +1,5 @@
 package com.example.apidatn.dto
 
-data class CartIdDto (
+data class ProductIdDto (
         var productId:Int?=null,
         )

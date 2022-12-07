@@ -1,6 +1,7 @@
 package com.example.apidatn.controller
 
 import com.example.apidatn.dto.ProductDto
+import com.example.apidatn.dto.ProductIdDto
 import com.example.apidatn.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
@@ -33,6 +34,10 @@ class ProductController {
     @GetMapping("/list/cate")
     fun findAllByCategoryDetailId(@RequestParam("cateDetailId") categoryDetailId:Int):ResponseEntity<MutableList<ProductDto>>
             = ResponseEntity.ok(productService.findAllByCategoryDetailId(categoryDetailId))
+
+    @PostMapping("/listId")
+    fun getAllById(@RequestBody listProductId:List<ProductIdDto>) : ResponseEntity<MutableList<ProductDto>>
+    = ResponseEntity.ok(productService.getProductListId(listProductId))
 
     @PostMapping("/image/{id}")
    fun saveImage(@PathVariable("id")productId: Int,@RequestParam("image") imageFile: MultipartFile):ResponseEntity<Boolean>

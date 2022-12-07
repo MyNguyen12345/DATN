@@ -126,7 +126,7 @@ class CartServiceImpl: CartService {
         return true
     }
 
-    override fun payListCart(listCartId: List<CartIdDto>): Float {
+    override fun payListCart(listCartId: List<ProductIdDto>): Float {
         var pay:Float= 0F;
         for (cartDto in listCartId){
             if(cartDto!=null){

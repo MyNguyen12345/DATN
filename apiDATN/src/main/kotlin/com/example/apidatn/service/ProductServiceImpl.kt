@@ -1,6 +1,7 @@
 package com.example.apidatn.service
 
 import com.example.apidatn.dto.ProductDto
+import com.example.apidatn.dto.ProductIdDto
 import com.example.apidatn.model.Image
 import com.example.apidatn.model.Product
 import com.example.apidatn.repository.ImageRepository
@@ -167,6 +168,22 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
             imageRepository.save(imageSave)
         }
         return true
+    }
+
+    override fun getProductListId(listProductId: List<ProductIdDto>): MutableList<ProductDto> {
+        val list:MutableList<ProductDto> = mutableListOf()
+        for (i in 0 until listProductId.size){
+            var productDto=toEntityDto(productRepository.findById(listProductId[i].productId!!).get())
+            if(ratingRepository.findByProductId(listProductId[i].productId!!).size>0){
+                productDto.rating = ratingRepository.avgRating(listProductId[i].productId!!)
+                productDto.userRating= ratingRepository.amountRatingByUser(listProductId[i].productId!!)
+            }else{
+                productDto.rating =0F
+                productDto.userRating=0
+            }
+            list.add(productDto)
+        }
+        return list
     }
 
 }

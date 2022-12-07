@@ -2,7 +2,6 @@ package com.example.apidatn.controller
 
 import com.example.apidatn.dto.BillDto
 import com.example.apidatn.dto.BillPayDto
-import com.example.apidatn.dto.CartIdDto
 import com.example.apidatn.service.BillService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

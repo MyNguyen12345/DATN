@@ -15,4 +15,5 @@ interface ProductRepository:JpaRepository<Product,Int> {
 
     @Query(value = "SELECT product.* FROM product join post on product.product_id=post.product_id where post.post_status='active'",nativeQuery = true)
     fun findAllProductByPostStatus():MutableList<Product>
+
 }

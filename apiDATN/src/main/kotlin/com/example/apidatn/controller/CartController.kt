@@ -1,8 +1,7 @@
 package com.example.apidatn.controller
 
 import com.example.apidatn.dto.CartDto
-import com.example.apidatn.dto.CartIdDto
-import com.example.apidatn.dto.DeleteDto
+import com.example.apidatn.dto.ProductIdDto
 import com.example.apidatn.dto.ListCartDto
 import com.example.apidatn.service.CartService
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,7 +25,7 @@ class CartController {
     = ResponseEntity.ok(cartService.getAmountCart(userId))
 
     @PostMapping("/pay")
-    fun payCartId(@RequestBody listCartId:List<CartIdDto>) : ResponseEntity<Float>
+    fun payCartId(@RequestBody listCartId:List<ProductIdDto>) : ResponseEntity<Float>
     = ResponseEntity.ok(cartService.payListCart(listCartId))
     @PostMapping("/{id}")
     fun addCart(@PathVariable("id") userId:Int,@RequestBody cartDto: CartDto):ResponseEntity<Boolean>
