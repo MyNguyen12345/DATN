@@ -81,8 +81,18 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
     }
 
     override fun findAllByUserId(userId: Int): MutableList<ProductDto> {
-        return productRepository.findAllByUserId(userId).stream().map { product:Product->toEntityDto(product) }
+        var list= productRepository.findAllByUserId(userId).stream().map { product:Product->toEntityDto(product) }
                 .collect(Collectors.toList())
+        for (product in list){
+            if(ratingRepository.findByProductId(product.productId!!).size>0){
+                product?.rating = ratingRepository.avgRating(product?.productId!!)
+                product?.userRating= ratingRepository.amountRatingByUser(product?.productId!!)
+            }else{
+                product?.rating =0F
+                product?.userRating=0
+            }
+        }
+        return  list
     }
 
     override fun findAllByCategoryDetailId(categoryDetailId: Int): MutableList<ProductDto> {
