@@ -57,6 +57,8 @@ class BillServiceImpl:BillService {
 
         for (index in 0 until billPayDto.listProductId!!.size){
             var productDto= billPayDto.listProductId!![index].productId?.let { productRepository.findById(it) }!!.get()
+            productDto.amountProduct= productDto.amountProduct?.minus(billPayDto.ListAmountBuy!![index].amountBuy!!)
+            productRepository.save(productDto)
            billDetailRepository.save(BillDetail(
                    amountBuy = billPayDto.ListAmountBuy!![index].amountBuy,
                    productId = billPayDto.listProductId!![index].productId,

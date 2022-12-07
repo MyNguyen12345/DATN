@@ -46,7 +46,11 @@ class CartServiceImpl: CartService {
                 val cart = cartDto.productId?.let { cartRepository.findByProductId(it).get() }
                 cart?.userId = userId
                 val amount = cart?.amountProduct!! + cartDto.amountProduct!!
-                cart.amountProduct = amount
+                if(amount<= cart.product?.amountProduct!!){
+                    cart.amountProduct = amount
+                }else{
+                    cart.amountProduct=cart.product?.amountProduct
+                }
                 cartRepository.save(cart)
             } else {
                 cartDto.userId = userId

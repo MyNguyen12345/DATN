@@ -69,7 +69,15 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
     }
 
     override fun getProductById(productId: Int): ProductDto {
-        return toEntityDto(productRepository.findById(productId).get())
+        var productDto=toEntityDto(productRepository.findById(productId).get())
+        if(ratingRepository.findByProductId(productId).size>0){
+            productDto.rating = ratingRepository.avgRating(productId)
+            productDto.userRating= ratingRepository.amountRatingByUser(productId)
+        }else{
+            productDto.rating =0F
+            productDto.userRating=0
+        }
+        return  productDto
     }
 
     override fun findAllByUserId(userId: Int): MutableList<ProductDto> {
