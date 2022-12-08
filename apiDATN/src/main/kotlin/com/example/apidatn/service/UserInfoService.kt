@@ -14,4 +14,5 @@ interface UserInfoService {
     fun updateImage(userId:Int,userImage:MultipartFile):Boolean
     fun statistics():StatisticsDto
     fun userByPhone(phone:Int):UserInfoDto
+    fun updateAddress(userId: Int,userInfoDto: UserInfoDto):Boolean
 }

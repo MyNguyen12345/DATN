@@ -101,4 +101,14 @@ class UserInfoServiceImpl():UserInfoService {
     override fun userByPhone(phone: Int): UserInfoDto {
         return toEntityDto(userRepository.findUserByPhone(phone).get())
     }
+
+    override fun updateAddress(userId: Int, userInfoDto: UserInfoDto): Boolean {
+        if(userRepository.findById(userId).isPresent){
+            var user=userRepository.findById(userId).get()
+            user.address=userInfoDto.address
+            userRepository.save(user)
+            return true
+        }
+        return false
+    }
 }

@@ -42,6 +42,10 @@ class UserInfoController (private val userInfoService: UserInfoService){
         return ResponseEntity(HttpStatus.BAD_REQUEST)
     }
 
+    @PostMapping("/address/{id}")
+    fun updateAddress(@PathVariable("id") userId: Int,@RequestBody userInfoDto: UserInfoDto) : ResponseEntity<Boolean>
+    = ResponseEntity.ok(userInfoService.updateAddress(userId, userInfoDto))
+
     @PostMapping("/status/{id}")
     fun updateUser(@PathVariable("id") userId: Int,@RequestParam("accountStatus") accountStatus:String): ResponseEntity<Boolean> {
          println(accountStatus)
