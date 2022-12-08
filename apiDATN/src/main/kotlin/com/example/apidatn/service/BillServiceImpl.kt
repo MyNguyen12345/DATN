@@ -65,7 +65,8 @@ class BillServiceImpl:BillService {
                    money = productDto.priceProduct,
                    billId = bill.billId)
             )
-            billPayDto.listProductId!![index].productId?.let { cartRepository.deleteById(it) }
+            var cart=cartRepository.findByProductId(billPayDto.listProductId!![index].productId!!).get()
+            cartRepository.deleteById(cart.cartId!!)
         }
         return true
     }
