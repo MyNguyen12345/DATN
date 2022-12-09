@@ -14,4 +14,6 @@ interface ProductService {
     fun saveImage(productId:Int, imageFile: MultipartFile):Boolean
     fun saveListImage(productId: Int,listImage:MutableList<MultipartFile>):Boolean
     fun getProductListId(listProductId:List<ProductIdDto>):MutableList<ProductDto>
+    fun getSearchProductName(userId: Int,search:String):MutableList<ProductDto>
+    fun searchList(phone: Int,search: String):MutableList<ProductDto>
 }

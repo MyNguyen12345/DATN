@@ -93,6 +93,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                 product?.userRating=0
             }
         }
+        print(list)
         return  list
     }
 
@@ -184,6 +185,40 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
             list.add(productDto)
         }
         return list
+    }
+
+    override fun getSearchProductName(userId: Int, search: String): MutableList<ProductDto> {
+        var list=productRepository.searchByUserId(userId,search.lowercase()).stream().map { product:Product->toEntityDto(product) }
+                .collect(Collectors.toList())
+        for (product in list){
+            if(ratingRepository.findByProductId(product.productId!!).size>0){
+                product?.rating = ratingRepository.avgRating(product?.productId!!)
+                product?.userRating= ratingRepository.amountRatingByUser(product?.productId!!)
+            }else{
+                product?.rating =0F
+                product?.userRating=0
+            }
+        }
+        return  list
+
+    }
+
+    override fun searchList(phone: Int, search: String): MutableList<ProductDto> {
+        println(search.lowercase())
+
+
+        var list=productRepository.searchListProduct(phone, search.lowercase()).stream().map { product:Product->toEntityDto(product) }
+                .collect(Collectors.toList())
+        for (product in list){
+            if(ratingRepository.findByProductId(product.productId!!).size>0){
+                product?.rating = ratingRepository.avgRating(product?.productId!!)
+                product?.userRating= ratingRepository.amountRatingByUser(product?.productId!!)
+            }else{
+                product?.rating =0F
+                product?.userRating=0
+            }
+        }
+        return  list
     }
 
 }

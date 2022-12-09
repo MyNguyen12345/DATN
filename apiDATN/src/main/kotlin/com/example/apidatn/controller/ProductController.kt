@@ -23,6 +23,14 @@ class ProductController {
         return ResponseEntity.ok(productService.getAllProduct(phone))
     }
 
+    @GetMapping("/search/{id}")
+    fun getSearchProduct(@PathVariable("id") userId: Int,@RequestParam(name="search",required = false) search:String):ResponseEntity<MutableList<ProductDto>>
+    = ResponseEntity.ok(productService.getSearchProductName(userId, search))
+
+    @GetMapping("/search/phone/{id}")
+    fun getListSearchProduct(@PathVariable("id") phone: Int,@RequestParam(name="search",required = false) search:String):ResponseEntity<MutableList<ProductDto>>
+            = ResponseEntity.ok(productService.searchList(phone, search))
+
     @GetMapping("/{id}")
     fun getProductById(@PathVariable("id") productId:Int):ResponseEntity<ProductDto>
     = ResponseEntity.ok(productService.getProductById(productId))
