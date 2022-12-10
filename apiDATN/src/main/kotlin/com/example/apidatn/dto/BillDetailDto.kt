@@ -10,7 +10,5 @@ data class BillDetailDto (
         var amountBuy:Int?=null,
         var moneyNow: Float?=null,
         var money:Float?=null,
-//        var bill: BillDto?=null,
         var product: ProductDto?=null,
-        var userInfoDto: UserInfoDto?=null
 )

@@ -42,7 +42,6 @@ class BillDetailServiceImpl:BillDetailService {
                             moneyNow = billDetail.moneyNow,
                             money = billDetail.money,
                             product = billDetail.product,
-                            userInfoDto=userInfoDto
                     )
             )
         }

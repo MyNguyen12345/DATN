@@ -52,18 +52,18 @@ class BillServiceImpl:BillService {
                 pay_id = billPayDto.payId,
                 totalPrice = billPayDto.priceTotal,
                 userId = billPayDto.userId
-                )
+        )
         billRepository.save(bill)
 
         for (index in 0 until billPayDto.listProductId!!.size){
             var productDto= billPayDto.listProductId!![index].productId?.let { productRepository.findById(it) }!!.get()
             productDto.amountProduct= productDto.amountProduct?.minus(billPayDto.ListAmountBuy!![index].amountBuy!!)
             productRepository.save(productDto)
-           billDetailRepository.save(BillDetail(
-                   amountBuy = billPayDto.ListAmountBuy!![index].amountBuy,
-                   productId = billPayDto.listProductId!![index].productId,
-                   money = productDto.priceProduct,
-                   billId = bill.billId)
+            billDetailRepository.save(BillDetail(
+                    amountBuy = billPayDto.ListAmountBuy!![index].amountBuy,
+                    productId = billPayDto.listProductId!![index].productId,
+                    money = productDto.priceProduct,
+                    billId = bill.billId)
             )
             var cart=cartRepository.findByProductId(billPayDto.listProductId!![index].productId!!).get()
             cartRepository.deleteById(cart.cartId!!)
@@ -71,10 +71,46 @@ class BillServiceImpl:BillService {
         return true
     }
 
-    override fun getBillUserId(userId: Int): BillDto {
-        var billDto=toEntityDtoBill(billRepository.findByUserId(userId))
-         billDto.listBillDetail=listBillDetail(billDto.billId!!)
-        return billDto
+    override fun getBillUserId(userId: Int,billStatusId: Int): MutableList<BillDto> {
+        var listBillDto= billRepository.findAllByUserIdAndBillStatusId(userId,billStatusId).stream().map { bill:Bill->toEntityDtoBill(bill) }
+                .collect(Collectors.toList())
+        var list:MutableList<BillDto> = mutableListOf()
+
+        for(billDto in listBillDto){
+            var listSS:MutableList<Int> = mutableListOf()
+            var listUserId:MutableList<Int> = mutableListOf()
+            for (billDetail in billDto.listBillDetail!!){
+                billDetail.product?.userId?.let { listUserId.add(it) }
+            }
+            var boolean=false
+            listSS.add(listUserId[0])
+            for (index in listUserId.size-1 downTo 0) {
+                boolean=false
+                var userId2 = listUserId[index]
+                for (i in listSS.size - 1 downTo 0) {
+                    var userId3 =listSS[i]
+                    if (userId2 == userId3) {
+                        boolean= true
+                        break
+                    }
+                }
+                if (!boolean){
+                    userId2?.let { listSS.add(it) }
+                }
+            }
+            println(listUserId)
+            println(listSS)
+            for ( userId in listSS){
+                billDto.listBillDetail= billDto.billId?.let {
+                    billDetailRepository.findAllProductUserId(userId, it).stream().map { billDetail:BillDetail->toEntityDtoBillDetail(billDetail) }
+                            .collect(Collectors.toList())
+                }
+                billDto.userInfoDto=toEntityDto(userRepository.findById(userId).get())
+                list.add(billDto)
+            }
+        }
+        return  list
+
     }
 
     override fun getBillStatus(billStatusId: Int): List<BillDto> {
@@ -115,7 +151,6 @@ class BillServiceImpl:BillService {
                             moneyNow = billDetail.moneyNow,
                             money = billDetail.money,
                             product = billDetail.product,
-                            userInfoDto=userInfoDto
                     )
             )
         }

@@ -11,5 +11,8 @@ class BillStatus (
         var billStatusId:Int?=null,
 
         @Column(name = "bill_status_name")
-        var billStatusName:String?=null
+        var billStatusName:String?=null,
+
+        @Column(name = "bill_status_icon")
+        var billStatusIcon:String?=null
         )

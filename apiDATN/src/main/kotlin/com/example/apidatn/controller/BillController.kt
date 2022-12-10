@@ -14,8 +14,8 @@ class BillController {
     private lateinit var billService: BillService
 
     @GetMapping("/{id}")
-    fun getBillUserId(@PathVariable("id") userId:Int):ResponseEntity<BillDto>
-    =ResponseEntity.ok(billService.getBillUserId(userId))
+    fun getBillUserId(@PathVariable("id") userId:Int,@RequestParam("billStatusId") billStatusId:Int):ResponseEntity<MutableList<BillDto>>
+    =ResponseEntity.ok(billService.getBillUserId(userId,billStatusId))
 
 
     @GetMapping("/status/{id}")

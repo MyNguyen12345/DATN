@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface BillRepository:JpaRepository<Bill,Int> {
-    fun findByUserId(userId:Int):Bill
+    fun findAllByUserIdAndBillStatusId(userId:Int,billStatusId: Int):MutableList<Bill>
 
     fun findAllByBillStatusId(billStatusId:Int):List<Bill>
 
