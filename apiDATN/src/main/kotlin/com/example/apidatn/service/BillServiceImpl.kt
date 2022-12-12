@@ -3,6 +3,7 @@ package com.example.apidatn.service
 import com.example.apidatn.dto.*
 import com.example.apidatn.model.Bill
 import com.example.apidatn.model.BillDetail
+import com.example.apidatn.model.Product
 import com.example.apidatn.model.User
 import com.example.apidatn.repository.*
 import org.modelmapper.ModelMapper
@@ -29,10 +30,14 @@ class BillServiceImpl:BillService {
     @Autowired
     private  lateinit var userRepository: UserRepository
 
+    @Autowired
+    private  lateinit var ratingRepository:RatingRepository
+
     private val mapper: ModelMapper = ModelMapper()
 
 
     fun toEntityDto(user: User): UserInfoDto = mapper.map(user, UserInfoDto::class.java)
+    fun toEntityDtoProduct(product: Product): ProductDto = mapper.map(product, ProductDto::class.java)
 
 
 
@@ -48,14 +53,14 @@ class BillServiceImpl:BillService {
         var listUserId : MutableList<Int> = mutableListOf()
         var listSS : MutableList<Int> = mutableListOf()
         for (index in 0 until billPayDto.listProductId!!.size){
-            var productDto= billPayDto.listProductId!![index].productId?.let { productRepository.findById(it) }!!.get()
-            productDto.amountProduct= productDto.amountProduct?.minus(billPayDto.ListAmountBuy!![index].amountBuy!!)
-            productRepository.save(productDto)
-            productDto.userId?.let { listUserId.add(it) }
+            var product=billPayDto.listProductId!![index].productId?.let { productRepository.findById(it) }!!.get()
+            product.amountProduct= product.amountProduct?.minus(billPayDto.ListAmountBuy!![index].amountBuy!!)
+            productRepository.save(product)
+            product.userId?.let { listUserId.add(it) }
             billDetailRepository.save(BillDetail(
                     amountBuy = billPayDto.ListAmountBuy!![index].amountBuy,
                     productId = billPayDto.listProductId!![index].productId,
-                    money = productDto.priceProduct,
+                    money = product.priceProduct,
                 )
             )
 
@@ -80,7 +85,7 @@ class BillServiceImpl:BillService {
         }
         for( userId in listSS){
             var listBillDetail=billDetailRepository.findAllByUserId(userId)
-            var price:Float=0F
+            var price=0F
 
             for (billDetail in listBillDetail){
                 var product= billDetail.productId?.let { productRepository.findById(it) }?.get()
@@ -109,43 +114,18 @@ class BillServiceImpl:BillService {
                 .collect(Collectors.toList())
         for (bill in listBillDto){
             bill.userInfoDto= toEntityDto(bill.listBillDetail?.get(0)?.product?.userId?.let { userRepository.findById(it) }!!.get())
+             for (billDetail in bill.listBillDetail!!){
+                 var productDto=toEntityDtoProduct(billDetail.productId?.let { productRepository.findById(it) }!!.get())
+                 if(ratingRepository.findByProductId(productDto.productId!!).size>0){
+                     billDetail.product?.rating = ratingRepository.avgRating(productDto?.productId!!)
+                     billDetail.product?.userRating= ratingRepository.amountRatingByUser(productDto?.productId!!)
+                 }else{
+                     billDetail.product?.rating=0F
+                     billDetail.product?.userRating=0
+                 }
+             }
         }
         return  listBillDto
-//        var list:MutableList<BillDto> = mutableListOf()
-//
-//        for(billDto in listBillDto){
-//            var listSS:MutableList<Int> = mutableListOf()
-//            var listUserId:MutableList<Int> = mutableListOf()
-//            for (billDetail in billDto.listBillDetail!!){
-//                billDetail.product?.userId?.let { listUserId.add(it) }
-//            }
-//            var boolean=false
-//            listSS.add(listUserId[0])
-//            for (index in listUserId.size-1 downTo 0) {
-//                boolean=false
-//                var userId2 = listUserId[index]
-//                for (i in listSS.size - 1 downTo 0) {
-//                    var userId3 =listSS[i]
-//                    if (userId2 == userId3) {
-//                        boolean= true
-//                        break
-//                    }
-//                }
-//                if (!boolean){
-//                    userId2?.let { listSS.add(it) }
-//                }
-//            }
-//            for ( userId in listSS){
-//                billDto.listBillDetail= billDto.billId?.let {
-//                    billDetailRepository.findAllProductUserId(userId, it).stream().map { billDetail:BillDetail->toEntityDtoBillDetail(billDetail) }
-//                            .collect(Collectors.toList())
-//                }
-//                billDto.userInfoDto=toEntityDto(userRepository.findById(userId).get())
-//                list.add(billDto)
-//            }
-//        }
-//        return  list
-
     }
 
     override fun getBillStatus(billStatusId: Int): List<BillDto> {
