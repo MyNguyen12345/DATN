@@ -23,7 +23,7 @@ class Bill(
         var dateBill: Date? =null,
 
         @Column(name = "total_price")
-        var totalPrice:Float?=null,
+        var totalPrice: Float? =null,
 
         @Column(name = "address_bill")
         var addressBill:String?=null,

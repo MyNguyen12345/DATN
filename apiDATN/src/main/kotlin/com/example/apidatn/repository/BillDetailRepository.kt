@@ -13,4 +13,8 @@ interface BillDetailRepository:JpaRepository<BillDetail,Int> {
     @Query(value = "select  bill_detail.* from bill_detail  join product  on bill_detail.product_id =product.product_id \n" +
             "where  product.user_id =:userId and bill_detail.bill_id =:billId",nativeQuery = true)
     fun findAllProductUserId(userId:Int,billId: Int):List<BillDetail>
+
+    @Query(value = "select  bill_detail.* from bill_detail join product on bill_detail.product_id = product.product_id \n" +
+            "where product.user_id =? and bill_detail.bill_id is  NULL",nativeQuery = true)
+    fun findAllByUserId(userId:Int) : List<BillDetail>
 }

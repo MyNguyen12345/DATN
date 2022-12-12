@@ -45,28 +45,61 @@ class BillServiceImpl:BillService {
     fun toEntityDtoBillDetail(billDetail: BillDetail): BillDetailDto = mapper.map(billDetail, BillDetailDto::class.java)
 
     override fun postBill(billPayDto: BillPayDto): Boolean {
-        var bill= Bill(
-                billStatusId = 1,
-                dateBill = Date(System.currentTimeMillis()),
-                addressBill = billPayDto.addressBill,
-                pay_id = billPayDto.payId,
-                totalPrice = billPayDto.priceTotal,
-                userId = billPayDto.userId
-        )
-        billRepository.save(bill)
-
+        var listUserId : MutableList<Int> = mutableListOf()
+        var listSS : MutableList<Int> = mutableListOf()
         for (index in 0 until billPayDto.listProductId!!.size){
             var productDto= billPayDto.listProductId!![index].productId?.let { productRepository.findById(it) }!!.get()
             productDto.amountProduct= productDto.amountProduct?.minus(billPayDto.ListAmountBuy!![index].amountBuy!!)
             productRepository.save(productDto)
+            productDto.userId?.let { listUserId.add(it) }
             billDetailRepository.save(BillDetail(
                     amountBuy = billPayDto.ListAmountBuy!![index].amountBuy,
                     productId = billPayDto.listProductId!![index].productId,
                     money = productDto.priceProduct,
-                    billId = bill.billId)
+                )
             )
+
             var cart=cartRepository.findByProductId(billPayDto.listProductId!![index].productId!!).get()
             cartRepository.deleteById(cart.cartId!!)
+        }
+        var boolean=false
+        listSS.add(listUserId[0])
+        for (index in listUserId.size-1 downTo 0) {
+            boolean=false
+            var userId2 = listUserId[index]
+            for (i in listSS.size - 1 downTo 0) {
+                var userId3 =listSS[i]
+                if (userId2 == userId3) {
+                    boolean= true
+                    break
+                }
+            }
+            if (!boolean){
+                userId2?.let { listSS.add(it) }
+            }
+        }
+        for( userId in listSS){
+            var listBillDetail=billDetailRepository.findAllByUserId(userId)
+            var price:Float=0F
+
+            for (billDetail in listBillDetail){
+                var product= billDetail.productId?.let { productRepository.findById(it) }?.get()
+                price += product?.priceProduct?.times((billDetail.amountBuy!!))?.minus((product?.priceDeposit?.times(product?.priceProduct!! * billDetail.amountBuy!!))!!.mod(100.0))!!.toFloat()
+                println(price)
+            }
+            var bill= Bill(
+                    billStatusId = 1,
+                    dateBill = Date(System.currentTimeMillis()),
+                    addressBill = billPayDto.addressBill,
+                    pay_id = billPayDto.payId,
+                    userId = billPayDto.userId,
+                    totalPrice = price
+            )
+            billRepository.save(bill)
+            for(billDetail in listBillDetail){
+                billDetail.billId=bill.billId
+                billDetailRepository.save(billDetail)
+            }
         }
         return true
     }
@@ -74,42 +107,44 @@ class BillServiceImpl:BillService {
     override fun getBillUserId(userId: Int,billStatusId: Int): MutableList<BillDto> {
         var listBillDto= billRepository.findAllByUserIdAndBillStatusId(userId,billStatusId).stream().map { bill:Bill->toEntityDtoBill(bill) }
                 .collect(Collectors.toList())
-        var list:MutableList<BillDto> = mutableListOf()
-
-        for(billDto in listBillDto){
-            var listSS:MutableList<Int> = mutableListOf()
-            var listUserId:MutableList<Int> = mutableListOf()
-            for (billDetail in billDto.listBillDetail!!){
-                billDetail.product?.userId?.let { listUserId.add(it) }
-            }
-            var boolean=false
-            listSS.add(listUserId[0])
-            for (index in listUserId.size-1 downTo 0) {
-                boolean=false
-                var userId2 = listUserId[index]
-                for (i in listSS.size - 1 downTo 0) {
-                    var userId3 =listSS[i]
-                    if (userId2 == userId3) {
-                        boolean= true
-                        break
-                    }
-                }
-                if (!boolean){
-                    userId2?.let { listSS.add(it) }
-                }
-            }
-            println(listUserId)
-            println(listSS)
-            for ( userId in listSS){
-                billDto.listBillDetail= billDto.billId?.let {
-                    billDetailRepository.findAllProductUserId(userId, it).stream().map { billDetail:BillDetail->toEntityDtoBillDetail(billDetail) }
-                            .collect(Collectors.toList())
-                }
-                billDto.userInfoDto=toEntityDto(userRepository.findById(userId).get())
-                list.add(billDto)
-            }
+        for (bill in listBillDto){
+            bill.userInfoDto= toEntityDto(bill.listBillDetail?.get(0)?.product?.userId?.let { userRepository.findById(it) }!!.get())
         }
-        return  list
+        return  listBillDto
+//        var list:MutableList<BillDto> = mutableListOf()
+//
+//        for(billDto in listBillDto){
+//            var listSS:MutableList<Int> = mutableListOf()
+//            var listUserId:MutableList<Int> = mutableListOf()
+//            for (billDetail in billDto.listBillDetail!!){
+//                billDetail.product?.userId?.let { listUserId.add(it) }
+//            }
+//            var boolean=false
+//            listSS.add(listUserId[0])
+//            for (index in listUserId.size-1 downTo 0) {
+//                boolean=false
+//                var userId2 = listUserId[index]
+//                for (i in listSS.size - 1 downTo 0) {
+//                    var userId3 =listSS[i]
+//                    if (userId2 == userId3) {
+//                        boolean= true
+//                        break
+//                    }
+//                }
+//                if (!boolean){
+//                    userId2?.let { listSS.add(it) }
+//                }
+//            }
+//            for ( userId in listSS){
+//                billDto.listBillDetail= billDto.billId?.let {
+//                    billDetailRepository.findAllProductUserId(userId, it).stream().map { billDetail:BillDetail->toEntityDtoBillDetail(billDetail) }
+//                            .collect(Collectors.toList())
+//                }
+//                billDto.userInfoDto=toEntityDto(userRepository.findById(userId).get())
+//                list.add(billDto)
+//            }
+//        }
+//        return  list
 
     }
 
