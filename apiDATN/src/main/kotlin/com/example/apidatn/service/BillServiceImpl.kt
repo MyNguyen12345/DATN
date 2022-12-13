@@ -39,7 +39,7 @@ class BillServiceImpl:BillService {
     fun toEntityDto(user: User): UserInfoDto = mapper.map(user, UserInfoDto::class.java)
     fun toEntityDtoProduct(product: Product): ProductDto = mapper.map(product, ProductDto::class.java)
 
-
+    fun toDtoEntityProduct(productDto: ProductDto): Product =mapper.map(productDto, Product::class.java)
 
     fun toDtoEntityBill(billDto: BillDto): Bill =mapper.map(billDto, Bill::class.java)
 
@@ -143,11 +143,20 @@ class BillServiceImpl:BillService {
 
     override fun updateBillStatus(billStatusId: Int, billId: Int): Boolean {
         if(billRepository.findById(billId).isPresent){
-            var billDto = billRepository.findById(billId).get()
-            billDto.billStatusId=billStatusId
-            billRepository.save(billDto)
-            return true
+            var bill = billRepository.findById(billId).get()
+            bill.billStatusId=billStatusId
+            billRepository.save(bill)
+            if(bill.billStatusId == 8){
+                var billDto = toEntityDtoBill(billRepository.findById(billId).get())
+                for(billDetail in billDto.listBillDetail!!){
+                    var product= billDetail.productId?.let { productRepository.findById(it)}!!.get()
+                    product.amountProduct= product.amountProduct?.plus(billDetail.amountBuy!!)
+                    productRepository.save(product)
+                }
 
+            }
+
+            return true
         }
         return false
     }
