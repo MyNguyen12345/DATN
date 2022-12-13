@@ -188,7 +188,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
     }
 
     override fun getSearchProductName(userId: Int, search: String): MutableList<ProductDto> {
-        var list=productRepository.searchByUserId(userId,search.lowercase()).stream().map { product:Product->toEntityDto(product) }
+        var list=productRepository.searchByUserId(userId,search.uppercase()).stream().map { product:Product->toEntityDto(product) }
                 .collect(Collectors.toList())
         for (product in list){
             if(ratingRepository.findByProductId(product.productId!!).size>0){

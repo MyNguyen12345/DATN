@@ -17,6 +17,9 @@ class BillController {
     fun getBillUserId(@PathVariable("id") userId:Int,@RequestParam("billStatusId") billStatusId:Int):ResponseEntity<MutableList<BillDto>>
     =ResponseEntity.ok(billService.getBillUserId(userId,billStatusId))
 
+    @GetMapping("/product/{id}")
+    fun getBillProductUserId(@PathVariable("id") userId: Int,@RequestParam("billStatusId") billStatusId: Int):ResponseEntity<MutableList<BillDto>>
+    = ResponseEntity.ok(billService.getBillByProductUserId(userId,billStatusId))
 
     @GetMapping("/status/{id}")
     fun listBillStatus(@PathVariable("id") billStatusId:Int):ResponseEntity<List<BillDto>>

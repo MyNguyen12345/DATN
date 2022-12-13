@@ -8,4 +8,6 @@ interface BillService {
     fun getBillUserId(userId:Int,billStatusId: Int):MutableList<BillDto>
     fun getBillStatus(billStatusId:Int):List<BillDto>
     fun updateBillStatus(billStatusId: Int,billId:Int):Boolean
+    fun getBillByProductUserId(userId: Int,billStatusId: Int):MutableList<BillDto>
+
 }

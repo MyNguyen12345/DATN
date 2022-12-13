@@ -17,4 +17,8 @@ interface BillDetailRepository:JpaRepository<BillDetail,Int> {
     @Query(value = "select  bill_detail.* from bill_detail join product on bill_detail.product_id = product.product_id \n" +
             "where product.user_id =? and bill_detail.bill_id is  NULL",nativeQuery = true)
     fun findAllByUserId(userId:Int) : List<BillDetail>
+
+    @Query(value = "select bill_detail.* from  bill_detail join product  on bill_detail.product_id = product.product_id \n" +
+            "where product.user_id =?",nativeQuery = true)
+    fun findAllByProductUserId(userId: Int):MutableList<BillDetail>
 }

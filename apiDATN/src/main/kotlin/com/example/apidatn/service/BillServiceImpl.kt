@@ -152,6 +152,15 @@ class BillServiceImpl:BillService {
         return false
     }
 
+    override fun getBillByProductUserId(userId: Int, billStatusId: Int): MutableList<BillDto> {
+       var list= billRepository.findAllByBillUserId(userId,billStatusId).stream().map { bill:Bill->toEntityDtoBill(bill) }
+                .collect(Collectors.toList())
+        for (bill in list){
+            bill.userInfoDto=toEntityDto(bill.userId?.let { userRepository.findById(it).get() }!!)
+        }
+        return  list
+    }
+
     fun listBillDetail(billId: Int): MutableList<BillDetailDto>? {
         var listBillDetailDto=billDetailRepository.findAllByBillId(billId).stream()
                 .map { billDetail:BillDetail->toEntityDtoBillDetail(billDetail) }.collect(Collectors.toList())
