@@ -23,6 +23,11 @@ class RegisterServiceImpl(private val userRepository: UserRepository):RegisterSe
             account.password= encoder.encode(accountDto.password)
             account.accountStatus="active"
             account.dateJoin= Date(System.currentTimeMillis())
+            account.avatar="images/default-person.png"
+            account.address="chưa cung cấp"
+            account.gender="chưa cung cấp"
+            account.username="advfgggh"
+            account.birthday=Date(System.currentTimeMillis())
             userRepository.save(account)
             return true
         }
