@@ -66,6 +66,7 @@ class CartServiceImpl: CartService {
 
     override fun getAllCart(userId: Int): MutableList<ListCartDto> {
         val listcart = cartRepository.findAllByUserId(userId)
+        println(listcart)
         for (cart in listcart){
             cart.product= cart.productId?.let { productRepository.findById(it).get() }
         }
