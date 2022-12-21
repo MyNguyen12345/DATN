@@ -23,6 +23,10 @@ class CustomUserDetailService (private val userRepository: UserRepository):UserD
 
 
     override fun loadUserByUsername(username:String): UserDetails {
+        if(username[0].equals(0)){
+            username.removePrefix(username[0].toString())
+        }
+        println(username)
         val phone=Integer.valueOf(username)
         val userDetailDto=toEntityDto(userRepository.findUserByPhone(phone).get())
         if (userDetailDto==null){

@@ -6,6 +6,7 @@ import com.example.apidatn.dto.AccountDto
 import com.example.apidatn.dto.ResponseTokenDto
 import com.example.apidatn.jwt.JwtSignKey
 import com.example.apidatn.jwt.JwtUtil
+import com.example.apidatn.repository.RoleRepository
 import com.example.apidatn.service.CustomUserDetailService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
@@ -27,6 +28,9 @@ class LoginController (private val customUserDetailService: CustomUserDetailServ
     @Autowired
     private lateinit var authenticationManager: AuthenticationManager
 
+    @Autowired
+    private  lateinit var  roleRepository: RoleRepository
+
     @PostMapping(value = ["/login"],produces = ["application/json;charset=UTF-8"])
     fun loginSign(@RequestBody accountDto: AccountDto): ResponseTokenDto {
         if (SignKey.privateKey==null && SignKey.publicKey==null) {
@@ -45,9 +49,11 @@ class LoginController (private val customUserDetailService: CustomUserDetailServ
         }
         val userDetails = customUserDetailService.loadUserByUsername(accountDto.phone.toString())
         var token = jwtUtil.generateToken(userDetails, jwtSignKey.decodePrivateKey(privatekeyByte))
+        val role=roleRepository.findRoleByPhone(Integer.valueOf(userDetails.username))
         return ResponseTokenDto(
                 token = token,
-                phone = Integer.valueOf(userDetails.username)
+                phone = Integer.valueOf(userDetails.username),
+                roleName = role.roleName
         )
     }
 

@@ -79,7 +79,7 @@ class PostServiceImpl():PostService {
                 postDate=postDate,
                 userId=userId,
                 productId=productId,
-                postStatus="active"
+                postStatus="Chờ xác nhận"
         )
         postRepository.save(post)
 

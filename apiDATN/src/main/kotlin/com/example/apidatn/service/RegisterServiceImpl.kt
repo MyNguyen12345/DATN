@@ -34,4 +34,21 @@ class RegisterServiceImpl(private val userRepository: UserRepository):RegisterSe
         return false
     }
 
+    override fun forgotPassword(phone:Int, pass: String): Boolean {
+      if (userRepository.findUserByPhone(phone).isPresent){
+          val user=userRepository.findUserByPhone(phone).get()
+          user.password=encoder.encode(pass)
+          userRepository.save(user)
+          return true
+      }
+        return false
+    }
+
+    override fun findByPhone(phone: Int): Boolean {
+        if(userRepository.findUserByPhone(phone).isPresent){
+            return true
+        }
+        return false
+    }
+
 }
