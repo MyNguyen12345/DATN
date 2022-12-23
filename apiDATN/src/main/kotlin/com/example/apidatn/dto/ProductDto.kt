@@ -17,7 +17,7 @@ data class ProductDto (
         var priceDeposit:Float?=null,
         var rating:Float?=null,
         var userRating:Int?=null,
-        var postStatus:String?=null,
+        var postStatus:String="cho",
         var listImage:MutableList<ImageDto>?=null
 
         )

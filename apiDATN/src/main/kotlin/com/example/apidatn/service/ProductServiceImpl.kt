@@ -91,7 +91,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                 .collect(Collectors.toList())
         for (product in list){
             if(product.productId?.let { postRepository.findPostByProductId(it) }?.isPresent == true){
-                product.postStatus= product.productId?.let { postRepository.findPostByProductId(it).get().postStatus }
+                product.postStatus= product.productId?.let { postRepository.findPostByProductId(it).get().postStatus }.toString()
             }
             if(ratingRepository.findByProductId(product.productId!!).size>0){
                 product?.rating = ratingRepository.avgRating(product?.productId!!)
@@ -109,7 +109,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                 .collect(Collectors.toList())
         for (product in list){
             if(product.productId?.let { postRepository.findPostByProductId(it) }?.isPresent == true){
-                product.postStatus= product.productId?.let { postRepository.findPostByProductId(it).get().postStatus }
+                product.postStatus= product.productId?.let { postRepository.findPostByProductId(it).get().postStatus }.toString()
             }
             if(ratingRepository.findByProductId(product.productId!!).size>0){
                 product?.rating = ratingRepository.avgRating(product?.productId!!)
