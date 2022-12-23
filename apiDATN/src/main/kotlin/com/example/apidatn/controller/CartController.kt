@@ -27,6 +27,7 @@ class CartController {
     @PostMapping("/pay")
     fun payCartId(@RequestBody listCartId:List<ProductIdDto>) : ResponseEntity<Float>
     = ResponseEntity.ok(cartService.payListCart(listCartId))
+
     @PostMapping("/{id}")
     fun addCart(@PathVariable("id") userId:Int,@RequestBody cartDto: CartDto):ResponseEntity<Boolean>
     = ResponseEntity.ok(cartService.addCart(userId, cartDto))

@@ -1,15 +1,14 @@
 package com.example.apidatn.service
 
-import com.example.apidatn.dto.ImageDto
-import com.example.apidatn.dto.NewPostDto
-import com.example.apidatn.dto.PostDto
-import com.example.apidatn.dto.ProductDto
+import com.example.apidatn.dto.*
 import com.example.apidatn.model.Image
 import com.example.apidatn.model.Post
 import com.example.apidatn.model.Product
+import com.example.apidatn.model.User
 import com.example.apidatn.repository.ImageRepository
 import com.example.apidatn.repository.PostRepository
 import com.example.apidatn.repository.ProductRepository
+import com.example.apidatn.repository.UserRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -33,6 +32,9 @@ class PostServiceImpl():PostService {
     @Autowired
     private lateinit var imageRepository: ImageRepository
 
+    @Autowired
+    private lateinit var userRepository:UserRepository
+
     private val mapper: ModelMapper = ModelMapper()
 
 
@@ -43,6 +45,8 @@ class PostServiceImpl():PostService {
     fun toDtoEntityPost(postDto: PostDto): Post =mapper.map(postDto, Post::class.java)
 
     fun toEntityDtoProduct(product: Product): ProductDto =mapper.map(product, ProductDto::class.java)
+    fun toEntityDtoUser(user: User): UserInfoDto =mapper.map(user, UserInfoDto::class.java)
+
 
     fun toEntityDtoImage(image: Image): ImageDto =mapper.map(image, ImageDto::class.java)
 
@@ -105,7 +109,32 @@ class PostServiceImpl():PostService {
     }
 
     override fun postByProductId(productId: Int): PostDto {
-        return toEntityDtoPost(postRepository.findPostByProductId(productId))
+        return toEntityDtoPost(postRepository.findPostByProductId(productId).get())
+    }
+
+    override fun listPostStatus(): MutableList<PostStatusDto> {
+       var list:MutableList<PostStatusDto> = mutableListOf()
+        var listId= postRepository.postByUserId()
+        for (userId in listId){
+            var postStatusDto=  PostStatusDto(
+                  listProduct = productRepository.findPostStatus(userId).stream().map { product:Product->toEntityDtoProduct(product) }
+                          .collect(Collectors.toList()),
+                    userInfoDto = toEntityDtoUser(userRepository.findById(userId).get())
+            )
+            list.add(postStatusDto)
+
+        }
+        return list
+    }
+
+    override fun updatePostStatus(productId: Int, postStatus: String): Boolean {
+        if(postRepository.findPostByProductId(productId).isPresent){
+            var post=postRepository.findPostByProductId(productId).get()
+            post.postStatus=postStatus
+            postRepository.save(post)
+            return true
+        }
+        return false
     }
 
 }

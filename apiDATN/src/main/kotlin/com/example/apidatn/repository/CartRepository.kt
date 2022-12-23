@@ -10,7 +10,9 @@ import java.util.*
 interface CartRepository :JpaRepository<Cart,Int>{
     fun findAllByUserId(userId:Int):MutableList<Cart>
 
-    fun findByProductId(productId: Int):Optional<Cart>
+    fun findByProductIdAndUserId(productId: Int,userId: Int):Optional<Cart>
+
+    fun findAllByProductId(productId: Int):MutableList<Cart>
 
     @Query(value = "select cart.* from cart join product  on cart.product_id = product.product_id where product.user_id =?",nativeQuery = true)
     fun listCartUserId(userId:Int):MutableList<Cart>

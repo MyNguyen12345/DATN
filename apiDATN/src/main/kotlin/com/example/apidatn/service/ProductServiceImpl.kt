@@ -5,6 +5,7 @@ import com.example.apidatn.dto.ProductIdDto
 import com.example.apidatn.model.Image
 import com.example.apidatn.model.Product
 import com.example.apidatn.repository.ImageRepository
+import com.example.apidatn.repository.PostRepository
 import com.example.apidatn.repository.ProductRepository
 import com.example.apidatn.repository.RatingRepository
 import org.modelmapper.ModelMapper
@@ -27,6 +28,9 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
     @Autowired
     private lateinit var imageRepository: ImageRepository
 
+    @Autowired
+    private  lateinit var postRepository:PostRepository
+
     private val mapper: ModelMapper = ModelMapper()
 
     fun toEntityDto(product: Product): ProductDto = mapper.map(product,ProductDto::class.java)
@@ -40,7 +44,6 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
         var listProduct=productRepository.listProduct(phone)
                 .stream().map { product:Product->toEntityDto(product) }
                 .collect(Collectors.toList())
-        println(listProduct)
         for (product in  listProduct){
             if(ratingRepository.findByProductId(product.productId!!).size>0){
                  rating = ratingRepository.avgRating(product.productId!!)
@@ -49,6 +52,7 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                 rating =0F
                 userRating=0
             }
+
             list.add(ProductDto(
                     productId = product.productId,
                     userId = product.userId,
@@ -62,7 +66,8 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                     priceDeposit = product.priceDeposit,
                     rating=rating,
                     userRating=userRating,
-                    listImage = product.listImage
+                    listImage = product.listImage,
+
             ))
         }
 
@@ -85,6 +90,9 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
         var list= productRepository.findAllByUserId(userId).stream().map { product:Product->toEntityDto(product) }
                 .collect(Collectors.toList())
         for (product in list){
+            if(product.productId?.let { postRepository.findPostByProductId(it) }?.isPresent == true){
+                product.postStatus= product.productId?.let { postRepository.findPostByProductId(it).get().postStatus }
+            }
             if(ratingRepository.findByProductId(product.productId!!).size>0){
                 product?.rating = ratingRepository.avgRating(product?.productId!!)
                 product?.userRating= ratingRepository.amountRatingByUser(product?.productId!!)
@@ -93,9 +101,25 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
                 product?.userRating=0
             }
         }
-        print(list)
         return  list
     }
+
+    override fun listProductUserId(userId: Int): MutableList<ProductDto> {
+        var list= productRepository.findProductByUserId(userId).stream().map { product:Product->toEntityDto(product) }
+                .collect(Collectors.toList())
+        for (product in list){
+            if(product.productId?.let { postRepository.findPostByProductId(it) }?.isPresent == true){
+                product.postStatus= product.productId?.let { postRepository.findPostByProductId(it).get().postStatus }
+            }
+            if(ratingRepository.findByProductId(product.productId!!).size>0){
+                product?.rating = ratingRepository.avgRating(product?.productId!!)
+                product?.userRating= ratingRepository.amountRatingByUser(product?.productId!!)
+            }else{
+                product?.rating =0F
+                product?.userRating=0
+            }
+        }
+        return  list    }
 
     override fun findAllByCategoryDetailId(categoryDetailId: Int): MutableList<ProductDto> {
         var list=productRepository.findAllByCategoryDetailId(categoryDetailId).stream().map { product:Product->toEntityDto(product) }
@@ -220,5 +244,6 @@ class ProductServiceImpl(private val productRepository: ProductRepository):Produ
         }
         return  list
     }
+
 
 }

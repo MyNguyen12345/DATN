@@ -2,6 +2,7 @@ package com.example.apidatn.controller
 
 import com.example.apidatn.dto.NewPostDto
 import com.example.apidatn.dto.PostDto
+import com.example.apidatn.dto.PostStatusDto
 import com.example.apidatn.dto.ProductDto
 import com.example.apidatn.service.PostService
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +25,14 @@ class PostController {
     @GetMapping("/{id}")
     fun getPostByProductId(@PathVariable("id") productId:Int):ResponseEntity<PostDto>
     = ResponseEntity.ok(postService.postByProductId(productId))
+
+    @GetMapping("/product")
+    fun getListPostStatus():ResponseEntity<MutableList<PostStatusDto>>
+    = ResponseEntity.ok(postService.listPostStatus())
+
+    @PostMapping("/{id}")
+    fun updatePostStatus(@PathVariable("id") productId: Int,@RequestParam("postStatus") postStatus: String):
+            ResponseEntity<Boolean> = ResponseEntity.ok(postService.updatePostStatus(productId, postStatus))
 
     @PostMapping()
     fun newPost(@RequestParam ("user_id")userId:Int, @RequestParam("post_status") postStatus:String, @RequestParam("category_detail_id")categoryDetailId:Int, @RequestParam("product_name")productName:String,

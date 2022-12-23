@@ -17,11 +17,12 @@ class ProductController {
     @Autowired
     private lateinit var productService:ProductService
 
-    @GetMapping("/phone/{id}")
-    fun getAllProduct(@PathVariable("id") phone:Int ):ResponseEntity<MutableList<ProductDto>>
+    @GetMapping("/phone/{phone}")
+    fun getAllProduct(@PathVariable("phone") phone:Int ):ResponseEntity<MutableList<ProductDto>>
     {
         return ResponseEntity.ok(productService.getAllProduct(phone))
     }
+
 
     @GetMapping("/search/{id}")
     fun getSearchProduct(@PathVariable("id") userId: Int,@RequestParam(name="search",required = false) search:String):ResponseEntity<MutableList<ProductDto>>
@@ -38,6 +39,10 @@ class ProductController {
     @GetMapping("/list")
     fun findAllByUserId(@RequestParam("userId") userId:Int):ResponseEntity<MutableList<ProductDto>>
     = ResponseEntity.ok(productService.findAllByUserId(userId))
+
+    @GetMapping("/status/{id}")
+    fun findListProductStatusUserId(@PathVariable("id") userId: Int) : ResponseEntity<MutableList<ProductDto>>
+    = ResponseEntity.ok(productService.listProductUserId(userId))
 
     @GetMapping("/list/cate")
     fun findAllByCategoryDetailId(@RequestParam("cateDetailId") categoryDetailId:Int):ResponseEntity<MutableList<ProductDto>>

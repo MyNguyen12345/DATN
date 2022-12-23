@@ -64,8 +64,8 @@ class BillServiceImpl:BillService {
                 )
             )
 
-            var cart=cartRepository.findByProductId(billPayDto.listProductId!![index].productId!!).get()
-            cartRepository.deleteById(cart.cartId!!)
+            var cart= billPayDto.userId?.let { cartRepository.findByProductIdAndUserId(billPayDto.listProductId!![index].productId!!, it).get() }
+            cartRepository.deleteById(cart?.cartId!!)
         }
         var boolean=false
         listSS.add(listUserId[0])

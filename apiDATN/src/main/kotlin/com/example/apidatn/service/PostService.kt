@@ -1,9 +1,6 @@
 package com.example.apidatn.service
 
-import com.example.apidatn.dto.ImageDto
-import com.example.apidatn.dto.NewPostDto
-import com.example.apidatn.dto.PostDto
-import com.example.apidatn.dto.ProductDto
+import com.example.apidatn.dto.*
 import org.springframework.web.multipart.MultipartFile
 
 interface PostService {
@@ -11,4 +8,6 @@ interface PostService {
     productStatus:String,avatar:MultipartFile,description:String,amountProduct:Int,priceProduct :Float, priceDeposit:Float,listImage:MutableList<MultipartFile>):Boolean
     fun statusProduct():MutableList<ProductDto>
     fun postByProductId(productId:Int):PostDto
+    fun listPostStatus():MutableList<PostStatusDto>
+    fun updatePostStatus(productId: Int,postStatus: String):Boolean
 }

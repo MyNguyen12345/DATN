@@ -8,6 +8,7 @@ interface ProductService {
     fun getAllProduct(phone:Int):MutableList<ProductDto>
     fun getProductById(productId:Int):ProductDto
     fun findAllByUserId(userId:Int):MutableList<ProductDto>
+    fun listProductUserId(userId: Int):MutableList<ProductDto>
     fun findAllByCategoryDetailId(categoryDetailId:Int):MutableList<ProductDto>
     fun addProduct(productDto: ProductDto):Boolean
     fun updateProduct(productDto: ProductDto,productId: Int):Boolean
@@ -16,4 +17,5 @@ interface ProductService {
     fun getProductListId(listProductId:List<ProductIdDto>):MutableList<ProductDto>
     fun getSearchProductName(userId: Int,search:String):MutableList<ProductDto>
     fun searchList(phone: Int,search: String):MutableList<ProductDto>
+
 }

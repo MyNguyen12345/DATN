@@ -42,8 +42,8 @@ class CartServiceImpl: CartService {
 
         if (userRepository.findById(userId).isPresent) {
 
-            if (cartRepository.findByProductId(cartDto.productId!!).isPresent) {
-                val cart = cartDto.productId?.let { cartRepository.findByProductId(it).get() }
+            if (cartRepository.findAllByProductId(cartDto.productId!!).size>0 && cartRepository.findAllByUserId(userId).size>0) {
+                val cart = cartRepository.findByProductIdAndUserId(cartDto.productId!!,userId).get()
                 cart?.userId = userId
                 val amount = cart?.amountProduct!! + cartDto.amountProduct!!
                 if(amount<= cart.product?.amountProduct!!){
@@ -53,8 +53,12 @@ class CartServiceImpl: CartService {
                 }
                 cartRepository.save(cart)
             } else {
-                cartDto.userId = userId
-                cartRepository.save(toDtoEntity(cartDto))
+                var cart=Cart(
+                        productId = cartDto.productId,
+                        userId = userId,
+                        amountProduct = cartDto.amountProduct
+                )
+                cartRepository.save(cart)
 
             }
 
@@ -66,7 +70,6 @@ class CartServiceImpl: CartService {
 
     override fun getAllCart(userId: Int): MutableList<ListCartDto> {
         val listcart = cartRepository.findAllByUserId(userId)
-        println(listcart)
         for (cart in listcart){
             cart.product= cart.productId?.let { productRepository.findById(it).get() }
         }
