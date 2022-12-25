@@ -89,8 +89,13 @@ class BillServiceImpl:BillService {
 
             for (billDetail in listBillDetail){
                 var product= billDetail.productId?.let { productRepository.findById(it) }?.get()
-                price += product?.priceProduct?.times((billDetail.amountBuy!!))?.minus((product?.priceDeposit?.times(product?.priceProduct!! * billDetail.amountBuy!!))!!.mod(100.0))!!.toFloat()
-                println(price)
+                if(product!=null
+                ){
+                    price += product?.amountProduct!!.times(product?.priceProduct!!).minus(product.amountProduct!!
+                            .times(product.priceProduct!!).div(100))
+                }
+
+
             }
             var bill= Bill(
                     billStatusId = 1,
