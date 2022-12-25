@@ -17,5 +17,6 @@ data  class BillDto(
         var pay_status:String?=null,
         var listBillDetail:MutableList<BillDetailDto>?=null,
         var pay: PayDto?=null,
+        var billStatus:BillStatusDto?=null,
         var userInfoDto: UserInfoDto?=null
 )
