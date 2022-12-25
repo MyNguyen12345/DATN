@@ -8,4 +8,5 @@ interface CategoryDetailService {
     fun getAllCategoryDetailByCategoryId(categoryId:Int):MutableList<CategoryDetailDto>
     fun addCategoryDetail(categoryDetailDto: CategoryDetailDto):Boolean
     fun updateCategoryDetail(categoryDetailId: Int,categoryDetailDto: CategoryDetailDto):Boolean
+    fun categoryDetailByProductId(productId:Int):CategoryDetailDto
 }

@@ -5,13 +5,18 @@ import com.example.apidatn.dto.CategoryDto
 import com.example.apidatn.model.Category
 import com.example.apidatn.model.CategoryDetail
 import com.example.apidatn.repository.CategoryDetailRepository
+import com.example.apidatn.repository.ProductRepository
 import org.modelmapper.ModelMapper
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.stream.Collectors
 
 @Service
 class CategoryDetailServiceImpl(private val categoryDetailRepository: CategoryDetailRepository):CategoryDetailService {
+
+    @Autowired
+    private lateinit var productRepository: ProductRepository
 
     private val mapper: ModelMapper = ModelMapper()
 
@@ -47,5 +52,9 @@ class CategoryDetailServiceImpl(private val categoryDetailRepository: CategoryDe
         }
         return false
 
+    }
+
+    override fun categoryDetailByProductId(productId: Int): CategoryDetailDto {
+            return toEntityDto(categoryDetailRepository.findCategoryDetailByProductId(productId))
     }
 }

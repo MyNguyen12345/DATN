@@ -1,9 +1,5 @@
 package com.example.apidatn.dto
 
-import com.example.apidatn.model.CategoryDetail
-import com.example.apidatn.model.Image
-import javax.persistence.*
-
 data class ProductDto (
         var productId:Int?=null,
         var userId:Int?=null,

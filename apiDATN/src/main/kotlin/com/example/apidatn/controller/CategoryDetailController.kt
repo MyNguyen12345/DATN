@@ -17,6 +17,10 @@ class CategoryDetailController {
     fun getAllCategoryDetail():ResponseEntity<MutableList<CategoryDetailDto>>
     = ResponseEntity.ok(categoryDetailService.getAllCategoryDetail())
 
+    @GetMapping("/product/{id}")
+    fun getCategoryDetail(@PathVariable("id") productId:Int):ResponseEntity<CategoryDetailDto>
+    = ResponseEntity.ok(categoryDetailService.categoryDetailByProductId(productId))
+
     @GetMapping("/{id}")
     fun getCategoryDetailById(@PathVariable("id") categoryDetailId:Int):ResponseEntity<CategoryDetailDto>
     =ResponseEntity.ok(categoryDetailService.getCategoryDetailById(categoryDetailId))
