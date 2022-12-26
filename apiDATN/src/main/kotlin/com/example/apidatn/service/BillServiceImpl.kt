@@ -171,7 +171,12 @@ class BillServiceImpl:BillService {
                 .collect(Collectors.toList())
         for (bill in list){
             bill.userInfoDto=toEntityDto(bill.userId?.let { userRepository.findById(it).get() }!!)
+            for (product in bill.listBillDetail!!){
+                product.product?.rating=0F
+                product.product?.userRating=0
+            }
         }
+
         return  list
     }
 
