@@ -7,6 +7,7 @@ import com.example.apidatn.model.Cart
 import com.example.apidatn.repository.BillStatusRepository
 import org.modelmapper.ModelMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
@@ -23,7 +24,7 @@ class BillStatusServiceImpl:BillStatusService {
     fun toEntityDto(billStatus: BillStatus): BillStatusDto = mapper.map(billStatus, BillStatusDto::class.java)
 
     override fun getBillStatus(): MutableList<BillStatusDto> {
-        return billStatusRepository.findAll().stream().map {billStatus:BillStatus->toEntityDto(billStatus) }
+        return billStatusRepository.findAllByBillStatusId().stream().map { billStatus:BillStatus->toEntityDto(billStatus) }
                 .collect(Collectors.toList())
 
     }
