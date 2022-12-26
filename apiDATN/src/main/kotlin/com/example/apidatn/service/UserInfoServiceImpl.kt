@@ -14,7 +14,7 @@ import java.nio.file.Paths
 import java.util.stream.Collectors
 
 @Service
-class UserInfoServiceImpl():UserInfoService {
+class UserInfoServiceImpl :UserInfoService {
 
     @Autowired
     private lateinit var userRepository: UserRepository

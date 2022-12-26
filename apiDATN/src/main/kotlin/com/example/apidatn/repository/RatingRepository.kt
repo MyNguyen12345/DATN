@@ -15,4 +15,5 @@ interface RatingRepository:JpaRepository<Rating,Int> {
 
     @Query(value = "SELECT AVG(rating_star)FROM rating where product_id=?",nativeQuery = true)
     fun avgRating(productId: Int):Float
+
 }

@@ -20,5 +20,6 @@ class Rating (
         var ratingStar:Float?=null,
 
         @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "user_id",insertable = false,updatable = false)
         var user: User?=null
         )

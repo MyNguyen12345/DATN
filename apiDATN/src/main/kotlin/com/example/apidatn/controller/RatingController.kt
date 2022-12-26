@@ -17,7 +17,7 @@ class RatingController {
     fun avgRating(@PathVariable("id") productId: Int):ResponseEntity<Float>
     = ResponseEntity.ok(ratingService.avgRating(productId))
 
-    @PostMapping("/{id}")
-    fun addRating(@PathVariable("id") productId:Int,@RequestBody ratingDto: RatingDto):ResponseEntity<Boolean>
-    = ResponseEntity.ok(ratingService.addRatingProduct(productId,ratingDto))
+    @PostMapping("")
+    fun addRating(@RequestBody ratingDto: RatingDto):ResponseEntity<Boolean>
+    = ResponseEntity.ok(ratingService.addRatingProduct(ratingDto))
 }
