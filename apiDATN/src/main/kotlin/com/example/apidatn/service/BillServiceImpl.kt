@@ -91,7 +91,7 @@ class BillServiceImpl:BillService {
                 var product= billDetail.productId?.let { productRepository.findById(it) }?.get()
                 if(product!=null
                 ){
-                    price += product?.amountProduct!!.times(product?.priceProduct!!).minus(product.amountProduct!!
+                    price += billDetail?.amountBuy!!.times(product?.priceProduct!!).minus(billDetail.amountBuy!!
                             .times(product.priceProduct!!).div(100))
                 }
 
