@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ProductRepository : JpaRepository<Product, Int> {
     fun findAllByUserId(userId: Int): MutableList<Product>
+
+    @Query(value = "select product.* from product join post on product.product_id = post.product_id where post.post_status ='Xác nhận' \n" +
+            "and product.category_detail_id =?",nativeQuery = true)
     fun findAllByCategoryDetailId(categoryDetailId: Int): MutableList<Product>
 
     @Query(value = "select *from product where  product.user_id =:userId  and upper (product_name) like %:search%",nativeQuery = true)
