@@ -7,6 +7,7 @@ import com.example.apidatn.dto.ResponseTokenDto
 import com.example.apidatn.jwt.JwtSignKey
 import com.example.apidatn.jwt.JwtUtil
 import com.example.apidatn.repository.RoleRepository
+import com.example.apidatn.repository.UserRepository
 import com.example.apidatn.service.CustomUserDetailService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
@@ -31,30 +32,42 @@ class LoginController (private val customUserDetailService: CustomUserDetailServ
     @Autowired
     private  lateinit var  roleRepository: RoleRepository
 
+    @Autowired
+    private  lateinit var  userRepository: UserRepository
+
     @PostMapping(value = ["/login"],produces = ["application/json;charset=UTF-8"])
     fun loginSign(@RequestBody accountDto: AccountDto): ResponseTokenDto {
-        if (SignKey.privateKey==null && SignKey.publicKey==null) {
-            jwtSignKey.jwtWithRsaSign()
-        }
-        val privatekeyByte=Base64.getDecoder().decode(SignKey.privateKey)
-        try {
-            authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken(
-                            accountDto.phone,
-                            accountDto.password
-                    )
+        if(accountDto.phone?.let { userRepository.findUserByPhone(it).isPresent } == true){
+            if (SignKey.privateKey==null && SignKey.publicKey==null) {
+                jwtSignKey.jwtWithRsaSign()
+            }
+            val privatekeyByte=Base64.getDecoder().decode(SignKey.privateKey)
+            try {
+                authenticationManager.authenticate(
+                        UsernamePasswordAuthenticationToken(
+                                accountDto.phone,
+                                accountDto.password
+                        )
+                )
+            } catch (ex: AuthenticationException) {
+                throw Exception("inavalid username/password", ex)
+            }
+            val userDetails = customUserDetailService.loadUserByUsername(accountDto.phone.toString())
+            print(userDetails)
+            var token = jwtUtil.generateToken(userDetails, jwtSignKey.decodePrivateKey(privatekeyByte))
+            val role=roleRepository.findRoleByPhone(Integer.valueOf(userDetails.username))
+            return ResponseTokenDto(
+                    token = token,
+                    phone = Integer.valueOf(userDetails.username),
+                    roleName = role.roleName
             )
-        } catch (ex: AuthenticationException) {
-            throw Exception("inavalid username/password", ex)
         }
-        val userDetails = customUserDetailService.loadUserByUsername(accountDto.phone.toString())
-        var token = jwtUtil.generateToken(userDetails, jwtSignKey.decodePrivateKey(privatekeyByte))
-        val role=roleRepository.findRoleByPhone(Integer.valueOf(userDetails.username))
         return ResponseTokenDto(
-                token = token,
-                phone = Integer.valueOf(userDetails.username),
-                roleName = role.roleName
+                token = "token",
+                phone = 0,
+                roleName = "khong co quyen"
         )
+
     }
 
 }
